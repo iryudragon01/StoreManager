@@ -1,0 +1,15 @@
+{% extends 'stock/layout/layout.html' %}
+{% block content %}
+
+<div class="message">
+  <p>  Login page</p>
+    <p>{{message}}</p>
+</div>
+<form class="" action="" method="post">
+  {% csrf_token %}
+  {{form.as_p}}
+  <button type="submit" name="button">create</button>
+
+</form>
+
+{% endblock content %}
