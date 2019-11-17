@@ -1,15 +1,13 @@
 from django.db import models
+from django.contrib.auth.models import User as UserDjango
 
 
 # Create your models here.
 class User(models.Model):
     objects: models.Manager
-    email = models.EmailField(default='test@test.com')
-    username = models.CharField(max_length=200)
-    password = models.CharField(max_length=500)
-    create_time = models.DateTimeField(auto_now=True)
-    last_login = models.DateTimeField(auto_now=True)
-    own = models.PositiveIntegerField(default=1)    # number of worker
+    user = models.OneToOneField(UserDjango,on_delete=models.CASCADE)
+    own = models.PositiveIntegerField(default=2)    # number of worker
+    key = models.PositiveIntegerField(default=0)
 
     def __unicode__(self):
         return self.username
@@ -19,6 +17,7 @@ class UserExtend(models.Model):
     objects: models.Manager
     owner = models.ForeignKey(User,on_delete=models.CASCADE)
     username = models.CharField(max_length=200)
+    password = models.CharField(max_length=200)
     date_log = models.DateTimeField(auto_now=True)
     access_level = models.PositiveIntegerField()  # 1-99
 

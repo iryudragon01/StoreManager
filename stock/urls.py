@@ -15,5 +15,6 @@ urlpatterns = [
 
     #user
     path('create_user/',userview.CreateView,name='create_user'),
-    path('login_user/',userview.LoginView,name='login_user')
+    path('login_user/',userview.LoginView,name='login_user'),
+    path('create_worker/',userview.WorkerView,name='create_worker')
 ]

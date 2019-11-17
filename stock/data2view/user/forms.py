@@ -1,5 +1,5 @@
 from django import forms
-from stock.models import User
+from stock.models import User,UserExtend
 import hashlib
 
 class RegisterForm(forms.Form):
@@ -52,3 +52,51 @@ class LoginForm(forms.Form):
             print('login success')
         else:
             raise forms.ValidationError('password is not correct')
+
+
+class WorkerForm(forms.Form):
+    username = forms.CharField(
+        label='worker id',
+        max_length=200,
+        min_length=1,
+        widget=forms.TextInput(
+            attrs={'placeholder':'worker id'}
+        )
+
+    )
+    password = forms.CharField(
+        label='worker password',
+        max_length=200,
+        min_length=1,
+        widget=forms.PasswordInput(
+            attrs={'placeholder':'password for worker'}
+        )
+
+    )
+    confirm_password = forms.CharField(
+        label='confirm password',
+        max_length=200,
+        min_length=1,
+        widget=forms.PasswordInput(
+            attrs={'placeholder':'confirm password'}
+        )
+
+    )
+
+    def clean(self):
+        cleaned_data = super(WorkerForm, self).clean()
+        password = cleaned_data.get('password')
+        confirm_password = cleaned_data.get('confirm_password')
+        username = cleaned_data.get('username')
+        if password != confirm_password:
+            raise forms.ValidationError('password and confirm password do not match')
+
+        if UserExtend.objects.filter(username=username).count() > 0:
+            raise forms.ValidationError('This User already exist!!')
+        else:
+            user = User(
+                username=username,
+                password=hashlib.sha512(password.encode('utf-8')).hexdigest()
+            )
+            user.save()
+
