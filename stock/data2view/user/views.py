@@ -84,34 +84,20 @@ def WorkerLoginView(request):
                 password=hashlib.sha512(password.encode('utf-8')).hexdigest()
             )
             if worker.exists():
-                track = random_track(55)
+                track = update_track(request, 55)
                 update = worker[0]
                 update.track = track
                 update.save()
-                request.session['worker'] = 'iryu dragon'
+                request.session['worker'] = update.username
                 return redirect('stock:work')
                 # response['Location'] += '?track='+track
                 # return response
     return render(request, 'stock/user/workerlogin.html', content)
 
 
-def WorkView(request):
-    content = {}
-    if request.GET:
-        track = request.GET['track']
-        worker = Worker.objects.filter(track=track)
-        if worker.exists():
-            newtrack = random_track()
-            update = worker[0]
-            update.track = newtrack
-            update.save()
-            content['track'] = newtrack
-    if request.POST:
-        print(request.session['worker'], ' post post')
-    print(request.session['worker'], ' pre post')
-    return render(request, 'stock/user/work.html',content)
 
-
-def random_track(length=55):
+def update_track(request, length=55):
     letters = string.ascii_lowercase
-    return ''.join(random.choice(letters) for i in range(length))
+    newtrack = ''.join(random.choice(letters) for i in range(length))
+    request.session['track'] = newtrack
+    return newtrack

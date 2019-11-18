@@ -3,3 +3,10 @@ py manage.py dumpdata stock  --format json --indent 4 >fixtures\stock.json
 
 restore backup from fixture
 py manage.py loaddata fixtures\stock.json
+
+
+Get response
+
+response = redirect('stock:index')
+# response['Location'] += '?track='+track
+# return response

@@ -2,6 +2,7 @@ from django.urls import path
 from . import views
 from .data2view.item import views as itemview
 from .data2view.user import views as userview
+from stock.data2view.index import views as indexview
 
 
 app_name = 'stock'
@@ -20,5 +21,9 @@ urlpatterns = [
     path('create_worker/',userview.WorkerView,name='create_worker'),
     path('login_worker/',userview.WorkerLoginView, name='login_worker'),
 
-    path('work/',userview.WorkView, name='work')
+    path('work/',indexview.WorkView, name='work'),
+
+    # AJAX
+    path('ajax/',indexview.AjaxView, name='ajax'),
+
 ]

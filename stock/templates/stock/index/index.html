@@ -1,15 +1,76 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title>index</title>
-  </head>
-  <body>
-    {% if user.is_authenticated  %}
-        <h2>Hello {{user.email}}</h2>
-        <a href="{% url 'stock:logout_user' %}">Logout</a>
-    {% else %}
-        <a href="{% url 'stock:login_user' %}">Login</a>
-    {% endif %}
-  </body>
-</html>
+{% extends 'stock/layout/layout.html' %}
+
+{% block content %}
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
+<script type="text/javascript">
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+var csrftoken = getCookie('csrftoken');function csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+}
+$.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        }
+    }
+});
+$(document).ready(function (){
+
+    $('#btn').click(function (){
+        list= document.getElementById('ajax')
+        $.ajax({
+          type:'GET',
+          url:'{% url 'stock:ajax' %}',
+          success:function(data){
+            list.value=data
+          }
+
+        })
+    })
+
+    $('#ajax').change(function (){
+      if(eval(this.value)>0){
+        $.ajax({
+          type:'POST',
+          url:'{% url 'stock:ajax' %}',
+          dataType:'json',
+          data:{'data':'this.value'},
+          success:function(data){
+            alert(data)
+          }
+
+        })
+      }
+    })
+
+})
+
+</script>
+{% if worker %}
+<p> hello {{worker}}</p>
+{% else %}
+<p class="message">
+<a href="{% url 'stock:login_worker' %}">please login</a>
+</p>
+{% endif %}
+<input id="ajax">
+<button type="button" id="btn" class="getdata">getdata</button>
+{% endblock %}
+{% block script %}
+{% endblock script %}
