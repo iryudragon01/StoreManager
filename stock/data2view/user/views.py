@@ -1,6 +1,12 @@
 from django.shortcuts import render,redirect
 from . import forms,action
 from stock.models import User
+from django.contrib.auth import authenticate,login,logout
+
+
+def IndexView(request):
+    return render(request,'stock/index/index.html')
+
 
 def CreateView(request):
     form = forms.RegisterForm(request.POST or None)
@@ -8,7 +14,13 @@ def CreateView(request):
     message = 'create new user'
     if request.POST:
         if form.is_valid():
-            message = 'success'
+            form.save()
+            user = authenticate(
+                email=form.cleaned_data['email'],
+                password=form.cleaned_data['password']
+            )
+            login(request,user)
+            return redirect('stock:index')
     content['form'] = form
     content['message'] = message
     return render(request,'stock/user/create.html',content)
@@ -19,9 +31,19 @@ def LoginView(request):
     content = {
         'form': form
     }
-    if form.is_valid():
-        content['message'] = 'success'
+    if request.POST:
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password']
+            user = authenticate(email=email, password=password)
+            login(request, user)
+            return redirect('stock:index')
     return render(request,'stock/user/login.html',content)
+
+
+def LogoutView(request):
+    logout(request)
+    return redirect('stock:index')
 
 
 def WorkerView(request,owner):

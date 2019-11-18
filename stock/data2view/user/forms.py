@@ -1,57 +1,98 @@
 from django import forms
-from stock.models import User,UserExtend
+from stock.models import Worker, User
 import hashlib
+from django.contrib.auth.forms import ReadOnlyPasswordHashField
+from django.contrib.auth import authenticate, login
 
-class RegisterForm(forms.Form):
-    email = forms.EmailField()
-    username = forms.CharField(min_length=3, max_length=200)
+
+class RegisterForm(forms.ModelForm):
     password = forms.CharField(min_length=6, max_length=200, widget=forms.PasswordInput())
     confirm_password = forms.CharField(min_length=6, max_length=200, widget=forms.PasswordInput())
 
-    def clean(self):
-        cleaned_data = super(RegisterForm, self).clean()
-        password = cleaned_data.get('password')
-        confirm_password = cleaned_data.get('confirm_password')
-        username = cleaned_data.get('username')
-        email = cleaned_data.get('email')
-        if password != confirm_password:
-            raise forms.ValidationError('password and confirm password do not match')
+    class Meta:
+        model = User
+        fields = ['email', 'full_name']
 
-        if User.objects.filter(username=username).count() > 0 or \
-                User.objects.filter(email=email).count() > 0:
-            raise forms.ValidationError('This User already exist!!')
-        else:
-            user = User(
-                email=email,
-                username=username,
-                password=hashlib.sha512(password.encode('utf-8')).hexdigest()
-            )
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        user = User.objects.filter(email=email)
+        if user.exists():
+            raise forms.ValidationError(email + ' is already exists')
+        return email
+
+    def clean_confirm_password(self):
+        # Check that the password and confirm password entries match
+        password = self.cleaned_data.get('password')
+        confirm_password = self.cleaned_data.get('confirm_password')
+        if password and confirm_password and password != confirm_password:
+            raise forms.ValidationError("Passwords don't match")
+        return confirm_password
+
+    def save(self, commit=True):
+        # Save provide password in hashed format
+        user = super(RegisterForm, self).save(commit=False)
+        user.set_password(self.cleaned_data['password'])
+        if commit:
             user.save()
+        return user
+
+
+class UserAdminCreationForm(forms.ModelForm):
+    password = forms.CharField(min_length=6, max_length=200, widget=forms.PasswordInput())
+    confirm_password = forms.CharField(min_length=6, max_length=200, widget=forms.PasswordInput())
+
+    class Meta:
+        model = User
+        fields = ['email', 'full_name']
+
+    def clean_confirm_password(self):
+        # Check that the password and confirm password entries match
+        password = self.cleaned_data.get('password')
+        confirm_password = self.cleaned_data.get('confirm_password')
+        if password and confirm_password and password != confirm_password:
+            raise forms.ValidationError("Passwords don't match")
+        return confirm_password
+
+    def save(self, commit=True):
+        # Save provide password in hashed format
+        user = super(UserAdminCreationForm, self).save(commit=False)
+        user.set_password(self.cleaned_data['password'])
+        if commit:
+            user.save()
+        return user
+
+
+class UserAdminChangeForm(forms.ModelForm):
+    """A form for updating users. Includes all the fields on
+       the user, but replaces the password field with admin's
+       password hash display field.
+       """
+    password = ReadOnlyPasswordHashField()
+
+    class Meta:
+        model = User
+        fields = ['email', 'password', 'active', 'admin']
+
+        def clean_password(self):
+            # Regardless of what the user provides, return the initial value.
+            # This is done here, rather than on the field, because the
+            # field does not have access to the initial value
+            return self.initial["password"]
 
 
 class LoginForm(forms.Form):
-    username = forms.CharField(
-        widget=forms.TextInput(
-            attrs={'placeholder': 'username or email',
-                   'class': 'username_class'}
-        )
-    )
+    email = forms.EmailField()
     password = forms.CharField(widget=forms.PasswordInput())
 
     def clean(self):
-        cleaned_data = super(LoginForm, self).clean()
-        username = cleaned_data.get('username')
-        password = cleaned_data.get('password')
-        if User.objects.filter(username=username).count()>0:
-            login =User.objects.get(username=username)
-        elif User.objects.filter(email=username).count()>0:
-            login = User.objects.get(email=username)
-        else:
-            raise forms.ValidationError(username + ' is not found')
-        if login.password == hashlib.sha512(password.encode('utf-8')).hexdigest():
-            print('login success')
-        else:
-            raise forms.ValidationError('password is not correct')
+        email = self.cleaned_data.get('email')
+        user = User.objects.filter(email=email)
+        if not user.exists():
+            raise forms.ValidationError(email + " is don't exists!!")
+        password = self.cleaned_data['password']
+        user = authenticate(email=email, password=password)
+        if user is None:
+            raise forms.ValidationError('wrong password')
 
 
 class WorkerForm(forms.Form):
@@ -60,7 +101,7 @@ class WorkerForm(forms.Form):
         max_length=200,
         min_length=1,
         widget=forms.TextInput(
-            attrs={'placeholder':'worker id'}
+            attrs={'placeholder': 'worker id'}
         )
 
     )
@@ -69,7 +110,7 @@ class WorkerForm(forms.Form):
         max_length=200,
         min_length=1,
         widget=forms.PasswordInput(
-            attrs={'placeholder':'password for worker'}
+            attrs={'placeholder': 'password for worker'}
         )
 
     )
@@ -78,7 +119,7 @@ class WorkerForm(forms.Form):
         max_length=200,
         min_length=1,
         widget=forms.PasswordInput(
-            attrs={'placeholder':'confirm password'}
+            attrs={'placeholder': 'confirm password'}
         )
 
     )
@@ -91,7 +132,7 @@ class WorkerForm(forms.Form):
         if password != confirm_password:
             raise forms.ValidationError('password and confirm password do not match')
 
-        if UserExtend.objects.filter(username=username).count() > 0:
+        if Worker.objects.filter(username=username).count() > 0:
             raise forms.ValidationError('This User already exist!!')
         else:
             user = User(
@@ -99,4 +140,3 @@ class WorkerForm(forms.Form):
                 password=hashlib.sha512(password.encode('utf-8')).hexdigest()
             )
             user.save()
-

@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'stock.apps.StockConfig',
 ]
 
+AUTH_USER_MODEL = 'stock.User'      # change build-in user model to stock.User
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

@@ -7,7 +7,7 @@ from .data2view.user import views as userview
 app_name = 'stock'
 
 urlpatterns = [
-    path('',views.indexView,name='index'),
+    path('',userview.IndexView, name='index'),
 
 
     # item
@@ -16,5 +16,6 @@ urlpatterns = [
     #user
     path('create_user/',userview.CreateView,name='create_user'),
     path('login_user/',userview.LoginView,name='login_user'),
+    path('logout/',userview.LogoutView,name='logout_user'),
     path('create_worker/',userview.WorkerView,name='create_worker')
 ]

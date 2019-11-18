@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>index</title>
+  </head>
+  <body>
+    {% if user.is_authenticated  %}
+        <h2>Hello {{user.email}}</h2>
+        <a href="{% url 'stock:logout_user' %}">Logout</a>
+    {% else %}
+        <a href="{% url 'stock:login_user' %}">Login</a>
+    {% endif %}
+  </body>
+</html>
