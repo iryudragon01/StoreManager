@@ -1,6 +1,5 @@
 from django import forms
 from stock.models import Worker, User
-import hashlib
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.contrib.auth import authenticate, login
 
@@ -129,14 +128,13 @@ class WorkerForm(forms.Form):
         password = cleaned_data.get('password')
         confirm_password = cleaned_data.get('confirm_password')
         username = cleaned_data.get('username')
+        if not username:
+            raise forms.ValidationError('username is not correct')
+
         if password != confirm_password:
             raise forms.ValidationError('password and confirm password do not match')
 
-        if Worker.objects.filter(username=username).count() > 0:
-            raise forms.ValidationError('This User already exist!!')
-        else:
-            user = User(
-                username=username,
-                password=hashlib.sha512(password.encode('utf-8')).hexdigest()
-            )
-            user.save()
+
+class WorkerLoginForm(forms.Form):
+    username = forms.CharField(max_length=255,min_length=1)
+    password = forms.CharField(widget=forms.PasswordInput(),min_length=1)

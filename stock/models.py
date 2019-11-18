@@ -45,6 +45,7 @@ class User(AbstractBaseUser):
     timestamp = models.DateTimeField(auto_now=True)
     confirm = models.BooleanField(default=False)
     confirm_date = models.DateTimeField(null=True)
+    under_worker = models.PositiveIntegerField(default=2)   # number for worker under user
 
     USERNAME_FIELD = 'email'
     # USERNAME_FIELD and password are required by default
@@ -79,24 +80,14 @@ class User(AbstractBaseUser):
         return self.admin
 
 
-
-
-    # objects: models.Manager
-    # user = models.OneToOneField(UserDjango,on_delete=models.CASCADE)
-    # own = models.PositiveIntegerField(default=2)    # number of worker
-    # key = models.PositiveIntegerField(default=0)
-    #
-    # def __unicode__(self):
-    #     return self.username
-
-
 class Worker(models.Model):
     objects: models.Manager
-    owner = models.ForeignKey(User,on_delete=models.CASCADE)
+    supervisor = models.ForeignKey(User, on_delete=models.CASCADE)
     username = models.CharField(max_length=200)
     password = models.CharField(max_length=200)
     date_log = models.DateTimeField(auto_now=True)
-    access_level = models.PositiveIntegerField()  # 1-99
+    track = models.CharField(max_length=255)     # track connection
+    access_level = models.PositiveIntegerField(default=99)  # 1-99
 
 
 class Item(models.Model):

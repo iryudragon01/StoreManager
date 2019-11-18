@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>index</title>
+  </head>
+  <body>
+    {% if user.is_authenticated %}
+    <h6>list of worker</h6>
+    <a href="{% url 'stock:create_worker' %}">create worker for {{user.email}}</a>
+    <p><a href="{% url 'stock:logout_user' %}">Logout</a></p>
+    {% else %}
+    <a href="{% url 'stock:login_user' %}">login</a>
+    {% endif %}
+
+  </body>
+</html>
