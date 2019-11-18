@@ -6,10 +6,18 @@
   </head>
   <body>
 {% if track %}
+<p>{{worker}}</p>
     {{track}}
     {% else %}
+    <a href="{% url 'stock:login_worker' %}">back to login</a>
     <p>no track</p>
     {%endif%}
     work page
+    <p>form</p>
+    <form class="" action="" method="post">
+      {% csrf_token %}
+      <button type="submit" name="button">ok</button>
+
+    </form>
   </body>
 </html>

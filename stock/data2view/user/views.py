@@ -88,22 +88,27 @@ def WorkerLoginView(request):
                 update = worker[0]
                 update.track = track
                 update.save()
-                response = redirect('stock:work')
-                response['Location'] += '?track='+track
-                return response
+                request.session['worker'] = 'iryu dragon'
+                return redirect('stock:work')
+                # response['Location'] += '?track='+track
+                # return response
     return render(request, 'stock/user/workerlogin.html', content)
 
 
 def WorkView(request):
-    track = request.GET['track']
-    worker = Worker.objects.filter(track=track)
     content = {}
-    if worker.exists():
-        newtrack = random_track()
-        update = worker[0]
-        update.track = newtrack
-        update.save()
-        content['track'] = newtrack
+    if request.GET:
+        track = request.GET['track']
+        worker = Worker.objects.filter(track=track)
+        if worker.exists():
+            newtrack = random_track()
+            update = worker[0]
+            update.track = newtrack
+            update.save()
+            content['track'] = newtrack
+    if request.POST:
+        print(request.session['worker'], ' post post')
+    print(request.session['worker'], ' pre post')
     return render(request, 'stock/user/work.html',content)
 
 
