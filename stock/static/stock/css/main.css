@@ -1,0 +1,29 @@
+.clear{
+  clear: both;
+}
+body{
+  background-color: #ddd;
+}
+header{
+
+}
+header ul{
+
+}
+header li{
+  list-style: none;
+  float: left;
+  font-size: 25px;
+  padding: 10px 10px;
+  line-height: 5px;
+  cursor: pointer;
+}
+header li:hover{
+  font-size: 35px;
+}
+#container{
+  margin: auto;
+  width: 90%;
+  background-color: #ccc;
+  margin-top: 50px;
+}

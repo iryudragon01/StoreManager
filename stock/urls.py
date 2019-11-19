@@ -8,7 +8,7 @@ from stock.data2view.index import views as indexview
 app_name = 'stock'
 
 urlpatterns = [
-    path('',userview.IndexView, name='index_user'),
+    path('',indexview.IndexView, name='index'),
 
 
     # item

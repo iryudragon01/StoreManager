@@ -1,0 +1,84 @@
+{% extends 'stock/layout/layout.html' %}
+
+{% block content %}
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
+<script type="text/javascript">
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+$(document).ready(function (){
+  var csrftoken = getCookie('csrftoken');function csrfSafeMethod(method) {
+      // these HTTP methods do not require CSRF protection
+      return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+  }
+  $.ajaxSetup({
+      beforeSend: function(xhr, settings) {
+          if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+              xhr.setRequestHeader("X-CSRFToken", csrftoken);
+          }
+      }
+  });
+
+    $('#btn').click(function (){
+        list= document.getElementById('ajax')
+        $.ajax({
+          type:'GET',
+          url:'{% url 'stock:ajax' %}',
+          success:function(data){
+            list.value=data
+          }
+
+        })
+    })
+
+    $('#ajax').change(function (){
+      if(eval(this.value)>0){
+        $.ajax({
+          type:'POST',
+          url:'{% url 'stock:ajax' %}',
+          dataType:'json',
+          data:{'name':this.id,'value':this.value},
+          success:function (data){
+              var node = document.createElement("LI");
+              var textnode = document.createTextNode(data[0]+' '+data[1]+' '+data[2]);
+              node.appendChild(textnode);
+              display = document.getElementById("display")
+              if(display.childElementCount>5){
+                display.removeChild(display.childNodes[0])
+              }
+              document.getElementById("display").appendChild(node);
+          }
+
+        })
+      }
+    })
+
+})
+
+</script>
+{% if worker %}
+<p> hello {{worker}}</p>
+{% else %}
+<p class="message">
+<a href="{% url 'stock:login_worker' %}">please login</a>
+</p>
+{% endif %}
+<ul id='display' style="height:300px;background-color:#cc1;font-size:17px;padding:14px 16px;position:relative"></ul>
+<input id="ajax">
+<button type="button" id="btn" class="getdata">getdata</button>
+{% endblock %}
+{% block script %}
+{% endblock script %}

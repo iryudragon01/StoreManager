@@ -6,6 +6,7 @@ import hashlib
 import random
 import string
 
+
 def IndexView(request):
     return render(request, 'stock/user/index.html')
 

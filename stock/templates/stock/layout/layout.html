@@ -1,10 +1,16 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
+    <link rel="stylesheet" href="{% static 'stock/css/main.css' %}">
+    <script type="text/javascript" src="{% static 'stock/scripts/main.js' %}">
+
+    </script>
     <title>StoreManager</title>
   </head>
   <body>
+    {% include 'stock/layout/menubar.html' %}
     {% block content %}
     {% endblock content %}
 

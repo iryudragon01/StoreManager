@@ -5,6 +5,10 @@ import random
 import json
 
 
+def IndexView(request):
+    return render(request,'stock/index/index.html')
+
+
 def AjaxView(request):
     if request.POST:
         name = request.POST.get('name') or 'no name data'
