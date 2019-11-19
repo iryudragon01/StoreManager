@@ -6,6 +6,14 @@ import json
 
 
 def AjaxView(request):
+    if request.POST:
+        name = request.POST.get('name') or 'no name data'
+        value = request.POST.get('value') or 'no value data'
+        print('name:', name, 'value:', value)
+        result = ['recorded',name,value]
+        data = json.dumps(result)
+        return HttpResponse(data, content_type='application/json')
+
     if request.is_ajax():
         list = ['iryu dragon', 'narisa wahkor', 'padthai shrimp ']
         data = json.dumps(list)
