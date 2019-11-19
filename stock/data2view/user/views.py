@@ -17,7 +17,7 @@ def CreateView(request):
             )
             login(request, user)
             request.session['supervisor'] = user.email
-            return redirect('stock:index_user')
+            return redirect('stock:index')
     content['form'] = form
     return render(request, 'stock/user/create.html', content)
 
@@ -33,7 +33,8 @@ def LoginView(request):
             password = form.cleaned_data['password']
             user = authenticate(email=email, password=password)
             login(request, user)
-            return redirect('stock:index_user')
+            request.session['supervisor'] = user.email
+            return redirect('stock:index')
     return render(request, 'stock/user/login.html', content)
 
 
