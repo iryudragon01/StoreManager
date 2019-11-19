@@ -27,3 +27,32 @@ header li:hover{
   background-color: #ccc;
   margin-top: 50px;
 }
+
+.form{
+  text-align: center;
+  font-size: 17px;
+  padding: 10px 10px;
+}
+.form input{
+  background-color: #ddd;
+  font-size: 17px;
+  padding: 10px 10px;
+  width: 300px;
+}
+.form label{
+  padding-right: 30px;
+  text-align: right;
+  width: 200px;
+  display: inline-block;
+}
+.form button{
+  text-align: center;
+  font-size: 25px;
+  padding: 10px 10px;
+  color: inherit;
+}
+.form button:hover{
+  font-size: 30px;
+  cursor: pointer;
+
+}

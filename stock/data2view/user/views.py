@@ -1,20 +1,13 @@
 from django.shortcuts import render, redirect
-from . import forms
+from . import forms,action
 from stock.models import User,Worker
 from django.contrib.auth import authenticate, login, logout
 import hashlib
-import random
-import string
-
-
-def IndexView(request):
-    return render(request, 'stock/user/index.html')
 
 
 def CreateView(request):
     form = forms.RegisterForm(request.POST or None)
     content = {}
-    message = 'create new user'
     if request.POST:
         if form.is_valid():
             form.save()
@@ -23,9 +16,9 @@ def CreateView(request):
                 password=form.cleaned_data['password']
             )
             login(request, user)
+            request.session['supervisor'] = user.email
             return redirect('stock:index_user')
     content['form'] = form
-    content['message'] = message
     return render(request, 'stock/user/create.html', content)
 
 
@@ -85,7 +78,7 @@ def WorkerLoginView(request):
                 password=hashlib.sha512(password.encode('utf-8')).hexdigest()
             )
             if worker.exists():
-                track = update_track(request, 55)
+                track = action.update_track(request, 55)
                 update = worker[0]
                 update.track = track
                 update.save()
@@ -95,10 +88,3 @@ def WorkerLoginView(request):
                 # return response
     return render(request, 'stock/user/workerlogin.html', content)
 
-
-
-def update_track(request, length=55):
-    letters = string.ascii_lowercase
-    newtrack = ''.join(random.choice(letters) for i in range(length))
-    request.session['track'] = newtrack
-    return newtrack

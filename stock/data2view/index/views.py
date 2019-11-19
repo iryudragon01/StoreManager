@@ -1,12 +1,12 @@
-from django.shortcuts import redirect, render,HttpResponse,Http404
+from django.shortcuts import redirect, render, HttpResponse, Http404
 from stock.models import Worker
-import string
-import random
 import json
+from stock.data2view.user.action import UserContent, update_track
 
 
 def IndexView(request):
-    return render(request,'stock/index/index.html')
+    content = UserContent(request)
+    return render(request, 'stock/index/index.html', content)
 
 
 def AjaxView(request):
@@ -14,7 +14,7 @@ def AjaxView(request):
         name = request.POST.get('name') or 'no name data'
         value = request.POST.get('value') or 'no value data'
         print('name:', name, 'value:', value)
-        result = ['recorded',name,value]
+        result = ['recorded', name, value]
         data = json.dumps(result)
         return HttpResponse(data, content_type='application/json')
 
@@ -29,7 +29,7 @@ def AjaxView(request):
 def WorkView(request):
     content = {}
     if 'worker' in request.session:
-        content['worker']= request.session['worker']
+        content['worker'] = request.session['worker']
     else:
         return redirect('stock:login_worker')
     if request.GET:
@@ -42,14 +42,4 @@ def WorkView(request):
         else:
             request.session['worker'] = None
             return redirect('stock:login_worker')
-    if request.POST:
-        print(request.session['worker'], ' post post')
-    print(request.session['worker'], ' pre post')
-    return render(request, 'stock/index/index.html',content)
-
-
-def update_track(request, length=55):
-    letters = string.ascii_lowercase
-    newtrack = ''.join(random.choice(letters) for i in range(length))
-    request.session['track'] = newtrack
-    return newtrack
+    return render(request, 'stock/index/index.html', content)

@@ -1,14 +1,16 @@
 {% extends 'stock/layout/layout.html' %}
 {% block content %}
+<div id="container">
+  <h1>Registration</h1>
+  <div class="message">
+    <p>  {{message}}</p>
+  </div>
+  <form class="form" action="" method="post">
+    {% csrf_token %}
+    {{form.as_p}}
+    <button type="submit" name="button">create</button>
 
-<div class="message">
-  <p>  {{message}}</p>
+  </form>
 </div>
-<form class="" action="" method="post">
-  {% csrf_token %}
-  {{form.as_p}}
-  <button type="submit" name="button">create</button>
-
-</form>
 
 {% endblock content %}

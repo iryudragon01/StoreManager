@@ -1,8 +1,15 @@
 <header>
   <ul>
-    <li onclick="menu(this)">Home</li>
-    <li onclick="menu(this)">Login</li>
-    <li onclick="menu(this)">Registration</li>
+    <li onclick="javascript:location.href='{% url 'stock:index' %}'">Home</li>
+    {% if worker %}
+    <li onclick="javascript:location.href='{% url 'stock:logout_user' %}'">Logout</li>
+
+
+    {% else %}
+    <li onclick="javascript:location.href='{% url 'stock:login_user' %}'">Login</li>
+    <li onclick="javascript:location.href='{% url 'stock:create_user' %}'">Registration</li>
+    {% endif %}
+
   </ul>
 </header>
 <div class="clear">

@@ -1,15 +1,17 @@
 {% extends 'stock/layout/layout.html' %}
 {% block content %}
-<p><a href="{% url 'stock:create_user' %}">Sign up</a></p>
+<div id="container">
 <div class="message">
   <p>  Login page</p>
     <p>{{message}}</p>
 </div>
-<form class="" action="" method="post">
+<form class="form" action="" method="post">
   {% csrf_token %}
   {{form.as_p}}
   <button type="submit" name="button">create</button>
 
 </form>
+
+</div>
 
 {% endblock content %}
