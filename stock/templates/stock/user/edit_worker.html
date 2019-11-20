@@ -2,15 +2,40 @@
 
 {% block content %}
 {% load static %}
-<div id="container">
-  <h1>{{name}}</h1>
-  <form class="form" action="" method="post">
-    {% csrf_token %}
+<div class="warning">
+  {{message}}
+</div>
+  <div id="container">
+    <h1>{{name}}</h1>
+    <form class="form" action="" method="post">
+      {% csrf_token %}
 
-    {{form.as_p}}
-    <button type="submit" name="DELETE">DELETE</button>
-    <button type="submit" name="update">Update</button>
-    <button type="button" onclick="history.go(-1)">Back</button>
-  </form>
-  </div>
-{% endblock %}
+      {{form.as_p}}
+      <input  class="hidden"  name='verifypwd' id="verifypwd">
+      <button class="hidden" type="submit" id="DELETE" name="DELETE"></button>
+      <button type="button" onclick="vrfpwd(event,'DELETE')">DELETE</button>
+      <button type="submit" name="update">Update</button>
+      <button type="button" onclick="history.go(-1)">Back</button>
+    </form>
+    </div>
+
+
+<div class="clear">
+
+</div>
+
+<div class="hidden" id="popup_input">
+<p><input type="password" id="verifypwdinput" placeholder="verify password"></p>
+<p><button type="button" onclick="vrfpwd(event,'submit')">verify</button>
+<button type="button" onclick="vrfpwd(event,'cancel')">cancel</button></p>
+</div>
+
+  {% endblock %}
+
+
+  {% block script %}
+  <script type="text/javascript" src="{% static 'stock/scripts/user/edit.js' %}">
+
+  </script>
+</div>
+{% endblock script %}

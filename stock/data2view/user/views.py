@@ -44,9 +44,10 @@ def LoginView(request):
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
             user = authenticate(email=email, password=password)
-            login(request, user)
-            request.session['supervisor'] = user.email
-            return redirect('stock:index_user')
+            if user:
+                login(request, user)
+                request.session['supervisor'] = user.email
+                return redirect('stock:index_user')
     return render(request, 'stock/user/login.html', content)
 
 
@@ -117,9 +118,17 @@ def EditWorkerView(request, pk):
     form = forms.EditWorkerForm(request.POST or None, instance=worker)
     if request.POST:
         if form.is_valid():
-            worker.access_level = form.cleaned_data['access_level']
-            worker.save()
-            return redirect('stock:index_user')
+            if 'DELETE' in request.POST:
+                user = authenticate(email=request.user, password=request.POST['verifypwd'])
+                if user:
+                    worker.delete()
+                    return redirect('stock:index_user')
+                else:
+                    content['message'] = 'cannot delete password wrong'
+            else:
+                worker.access_level = form.cleaned_data['access_level']
+                worker.save()
+                return redirect('stock:index_user')
     content['form'] = form
     content['name'] = worker.username
     return render(request, 'stock/user/edit_worker.html', content)
