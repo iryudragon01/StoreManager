@@ -15,10 +15,16 @@ urlpatterns = [
     path('create_item/',itemview.CreateView,name='create_item'),
 
     #user
+    path('user/index',userview.ListView, name='index_user'),
     path('create_user/',userview.CreateView,name='create_user'),
     path('login_user/',userview.LoginView,name='login_user'),
     path('logout/',userview.LogoutView,name='logout_user'),
+
+    #worker
     path('create_worker/',userview.WorkerView,name='create_worker'),
+    path('worker/edit/<int:pk>',userview.EditWorkerView, name='edit_worker'),
+
+
     path('login_worker/',userview.WorkerLoginView, name='login_worker'),
 
     path('work/',indexview.WorkView, name='work'),

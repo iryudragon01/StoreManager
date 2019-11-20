@@ -5,7 +5,6 @@ body{
   background-color: #ddd;
 }
 header{
-
 }
 header ul{
 
@@ -39,7 +38,21 @@ header li:hover{
   padding: 10px 10px;
   width: 300px;
 }
+#container h1{
+  text-align: center;
+  font-size: 35px;
+  margin: auto;
+
+}
+.form select{
+  font-size: 25px;
+  padding: 0 16px;
+  width: 30%;
+  background-color: inherit;
+  text-align-last: right;
+}
 .form label{
+  font-size: 25px;
   padding-right: 30px;
   text-align: right;
   width: 200px;
@@ -48,7 +61,7 @@ header li:hover{
 .form button{
   text-align: center;
   font-size: 25px;
-  padding: 10px 10px;
+  padding: 10px 30px;
   color: inherit;
 }
 .form button:hover{
@@ -56,3 +69,27 @@ header li:hover{
   cursor: pointer;
 
 }
+ul#worker li{
+  list-style: none;
+}
+ul#worker p{
+  text-align: right;
+  font-size: 16px;
+  padding: 1px 16px;
+  float: left
+}
+ul#worker p:nth-child(1){
+  width: 150px;
+}
+ul#worker p:nth-child(2){
+  width: 250px;
+}
+ul#worker p:nth-child(3){
+  width: 120px;
+}
+ul#worker p:nth-child(4){
+  width: 120px;
+}
+ul#worker a{
+  cursor: pointer;
+  text-decoration: none;

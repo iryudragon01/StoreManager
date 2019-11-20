@@ -1,8 +1,20 @@
 from django.shortcuts import render, redirect
-from . import forms,action
-from stock.models import User,Worker
+from . import forms, action
+from stock.models import User, Worker
 from django.contrib.auth import authenticate, login, logout
 import hashlib
+
+
+def ListView(request):
+    content = {}
+    supervisor = User.objects.filter(email=request.user)
+    if supervisor.exists():
+        workers = Worker.objects.filter(supervisor=supervisor[0])
+        if workers.exists():
+            content['workers'] = workers
+            if workers.count() < supervisor[0].under_worker:
+                content['add_worker'] = 'yes'
+    return render(request, 'stock/user/index.html', content)
 
 
 def CreateView(request):
@@ -17,7 +29,7 @@ def CreateView(request):
             )
             login(request, user)
             request.session['supervisor'] = user.email
-            return redirect('stock:index')
+            return redirect('stock:index_user')
     content['form'] = form
     return render(request, 'stock/user/create.html', content)
 
@@ -34,7 +46,7 @@ def LoginView(request):
             user = authenticate(email=email, password=password)
             login(request, user)
             request.session['supervisor'] = user.email
-            return redirect('stock:index')
+            return redirect('stock:index_user')
     return render(request, 'stock/user/login.html', content)
 
 
@@ -47,6 +59,10 @@ def WorkerView(request):
     user = User.objects.filter(email=request.user.email)
     if not user.exists():
         return redirect('stock:login_user')
+    worker = Worker.objects.filter(supervisor=user[0])
+    if worker.exists():
+        if worker.count() >= user[0].under_worker:
+            return redirect('stock:index_user')
 
     form = forms.WorkerForm(request.POST or None)
     if request.POST:
@@ -55,9 +71,10 @@ def WorkerView(request):
                 supervisor=user[0],
                 username=form.cleaned_data['username'],
                 password=hashlib.sha512(
-                         form.cleaned_data['password'].encode('utf-8')).hexdigest()
+                    form.cleaned_data['password'].encode('utf-8')).hexdigest()
             )
             worker.save()
+            return redirect('stock:index_user')
 
     content = {'form': form}
 
@@ -88,4 +105,46 @@ def WorkerLoginView(request):
                 # response['Location'] += '?track='+track
                 # return response
     return render(request, 'stock/user/workerlogin.html', content)
+
+
+def EditWorkerView(request, pk):
+    content = {}
+    if not is_supervisor(request):
+        return redirect('stock:login_user')
+    if not is_worker(get_supervisor(request), pk):
+        return redirect('stock:index_user')
+    worker = get_worker(get_supervisor(request), pk)
+    form = forms.EditWorkerForm(request.POST or None, instance=worker)
+    if request.POST:
+        if form.is_valid():
+            worker.access_level = form.cleaned_data['access_level']
+            worker.save()
+            return redirect('stock:index_user')
+    content['form'] = form
+    content['name'] = worker.username
+    return render(request, 'stock/user/edit_worker.html', content)
+
+
+def is_supervisor(request):
+    user = User.objects.filter(email=request.user)
+    if user.exists():
+        return True
+    return False
+
+
+def get_supervisor(request):
+    user = User.objects.get(email=request.user)
+    return user
+
+
+def is_worker(supervisor,pk):
+    worker = Worker.objects.filter(supervisor=supervisor,id=pk)
+    if worker.exists():
+        return True
+    return False
+
+
+def get_worker(supervisor,pk):
+    worker = Worker.objects.get(supervisor=supervisor,id=pk)
+    return worker
 

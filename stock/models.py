@@ -87,7 +87,10 @@ class Worker(models.Model):
     password = models.CharField(max_length=200)
     date_log = models.DateTimeField(auto_now=True)
     track = models.CharField(max_length=255)     # track connection
-    access_level = models.PositiveIntegerField(default=99)  # 1-99
+    access_level = models.PositiveIntegerField(default=99,
+                                               choices=[(1,'admin'),(10,'superuser'),(99,'worker')],
+
+                                               )  # 1-99
 
 
 class Item(models.Model):

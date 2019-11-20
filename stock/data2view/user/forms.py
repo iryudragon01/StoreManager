@@ -138,3 +138,10 @@ class WorkerForm(forms.Form):
 class WorkerLoginForm(forms.Form):
     username = forms.CharField(max_length=255,min_length=1)
     password = forms.CharField(widget=forms.PasswordInput(),min_length=1)
+
+
+class EditWorkerForm(forms.ModelForm):
+
+    class Meta:
+        model = Worker
+        fields =['access_level']

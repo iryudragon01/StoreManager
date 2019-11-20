@@ -10,7 +10,13 @@
     <title>StoreManager</title>
   </head>
   <body>
-    {% include 'stock/layout/menubar.html' %}
+    {% if user.is_authenticated%}
+      {% include 'stock/layout/menubar_userlogin.html' %}
+    {% else %}
+      {% include 'stock/layout/menubar.html' %}
+    {% endif %}
+
+
     {% block content %}
     {% endblock content %}
 

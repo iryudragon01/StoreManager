@@ -1,17 +1,53 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title>index</title>
-  </head>
-  <body>
-    {% if user.is_authenticated %}
-    <h6>list of worker</h6>
-    <a href="{% url 'stock:create_worker' %}">create worker for {{user.email}}</a>
-    <p><a href="{% url 'stock:logout_user' %}">Logout</a></p>
-    {% else %}
-    <a href="{% url 'stock:login_user' %}">login</a>
-    {% endif %}
+{% extends 'stock/layout/layout.html' %}
 
-  </body>
-</html>
+{% block content %}
+{% load static %}
+<div id="container">
+
+      {% if user.is_authenticated %}
+      <h1>list of worker</h1>
+          {% if workers %}
+              <ul id='worker'>
+                <li>
+                  <p>username</p>
+                  <p>supervisor</p>
+                  <p>access_level</p>
+                  <p>edit</p>
+                </li>
+                <div class="clear">
+
+                </div>
+                {% for worker in workers %}
+                    <li>
+                        <p>{{worker.username}}</p>
+                        <p>{{worker.supervisor}}</p>
+                        <p>
+                          {% ifequal worker.access_level 1 %}
+                            admin
+                          {% endifequal %}
+                          {% ifequal worker.access_level 10 %}
+                            super worker
+                          {% endifequal %}
+                          {% ifequal worker.access_level 99 %}
+                            worker
+                          {% endifequal %}</p>
+                        <p><a href="{% url 'stock:edit_worker' worker.id %}">edit</a></p>
+                      </li>
+                      <div class="clear">
+
+                      </div>
+                {% endfor %}
+                {% if add_worker %}
+                <li><p><a href="{% url 'stock:create_worker' %}">add new worker</a></p></li>
+                <div class="clear">
+
+                </div>
+                {% endif %}
+              </ul>
+          {% endif %}
+      {% else %}
+      <p>not login</p>
+      {% endif %}
+
+</div>
+{% endblock %}
