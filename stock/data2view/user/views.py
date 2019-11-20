@@ -5,6 +5,10 @@ from django.contrib.auth import authenticate, login, logout
 import hashlib
 
 
+def IndexView(request):
+    return render(request, 'stock/user/index.html')
+
+
 def ListView(request):
     content = {}
     supervisor = User.objects.filter(email=request.user)
@@ -14,7 +18,7 @@ def ListView(request):
             content['workers'] = workers
             if workers.count() < supervisor[0].under_worker:
                 content['add_worker'] = 'yes'
-    return render(request, 'stock/user/index.html', content)
+    return render(request, 'stock/user/list.html', content)
 
 
 def CreateView(request):

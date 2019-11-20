@@ -6,6 +6,7 @@ from stock.data2view.user.action import UserContent, update_track
 
 def IndexView(request):
     content = UserContent(request)
+    content['linkimage'] = 'http://wwww.google.com'
     return render(request, 'stock/index/index.html', content)
 
 

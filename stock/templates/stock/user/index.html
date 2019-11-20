@@ -5,49 +5,10 @@
 <div id="container">
 
       {% if user.is_authenticated %}
-      <h1>list of worker</h1>
-          {% if workers %}
-              <ul id='worker'>
-                <li>
-                  <p>username</p>
-                  <p>supervisor</p>
-                  <p>access_level</p>
-                  <p>edit</p>
-                </li>
-                <div class="clear">
-
-                </div>
-                {% for worker in workers %}
-                    <li>
-                        <p>{{worker.username}}</p>
-                        <p>{{worker.supervisor}}</p>
-                        <p>
-                          {% ifequal worker.access_level 1 %}
-                            admin
-                          {% endifequal %}
-                          {% ifequal worker.access_level 10 %}
-                            super worker
-                          {% endifequal %}
-                          {% ifequal worker.access_level 99 %}
-                            worker
-                          {% endifequal %}</p>
-                        <p><a href="{% url 'stock:edit_worker' worker.id %}">edit</a></p>
-                      </li>
-                      <div class="clear">
-
-                      </div>
-                {% endfor %}
-                {% if add_worker %}
-                <li><p><a href="{% url 'stock:create_worker' %}">add new worker</a></p></li>
-                <div class="clear">
-
-                </div>
-                {% endif %}
-              </ul>
-          {% endif %}
+      <p><a href="{% url 'stock:list_user' %}">manage worker</a></p>
+      <p>gotowork</p>
       {% else %}
-      <p>not login</p>
+          <p>not login</p>
       {% endif %}
-
 </div>
 {% endblock %}

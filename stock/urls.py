@@ -15,7 +15,8 @@ urlpatterns = [
     path('create_item/',itemview.CreateView,name='create_item'),
 
     #user
-    path('user/index',userview.ListView, name='index_user'),
+    path('user/index',userview.IndexView, name='index_user'),
+    path('user/list',userview.ListView, name='list_user'),
     path('create_user/',userview.CreateView,name='create_user'),
     path('login_user/',userview.LoginView,name='login_user'),
     path('logout/',userview.LogoutView,name='logout_user'),
