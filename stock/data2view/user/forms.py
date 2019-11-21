@@ -10,7 +10,7 @@ class RegisterForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['email', 'full_name']
+        fields = ['email', 'full_name','url']
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
@@ -70,7 +70,7 @@ class UserAdminChangeForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['email', 'password', 'active', 'admin']
+        fields = ['email', 'url', 'password', 'active', 'admin']
 
         def clean_password(self):
             # Regardless of what the user provides, return the initial value.
@@ -92,56 +92,3 @@ class LoginForm(forms.Form):
         user = authenticate(email=email, password=password)
         if user is None:
             raise forms.ValidationError('wrong password')
-
-
-class WorkerForm(forms.Form):
-    username = forms.CharField(
-        label='worker id',
-        max_length=200,
-        min_length=1,
-        widget=forms.TextInput(
-            attrs={'placeholder': 'worker id'}
-        )
-
-    )
-    password = forms.CharField(
-        label='worker password',
-        max_length=200,
-        min_length=1,
-        widget=forms.PasswordInput(
-            attrs={'placeholder': 'password for worker'}
-        )
-
-    )
-    confirm_password = forms.CharField(
-        label='confirm password',
-        max_length=200,
-        min_length=1,
-        widget=forms.PasswordInput(
-            attrs={'placeholder': 'confirm password'}
-        )
-
-    )
-
-    def clean(self):
-        cleaned_data = super(WorkerForm, self).clean()
-        password = cleaned_data.get('password')
-        confirm_password = cleaned_data.get('confirm_password')
-        username = cleaned_data.get('username')
-        if not username:
-            raise forms.ValidationError('username is not correct')
-
-        if password != confirm_password:
-            raise forms.ValidationError('password and confirm password do not match')
-
-
-class WorkerLoginForm(forms.Form):
-    username = forms.CharField(max_length=255,min_length=1)
-    password = forms.CharField(widget=forms.PasswordInput(),min_length=1)
-
-
-class EditWorkerForm(forms.ModelForm):
-
-    class Meta:
-        model = Worker
-        fields =['access_level']

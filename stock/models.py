@@ -3,11 +3,13 @@ from django.contrib.auth.models import AbstractBaseUser,BaseUserManager
 
 
 class UserManager(BaseUserManager):
-    def create_user(self, email, password=None, is_active=True, is_staff=False, is_admin=False):
+    def create_user(self, email, url, password=None, is_active=True, is_staff=False, is_admin=False):
         if not email:
             raise ValueError('user must have an email address ')
         if not password:
             raise ValueError('user must have a password')
+        if not url:
+            raise ValueError('user must have an URL')
         user_obj = self.model(
             email=self.normalize_email(email)
         )
@@ -39,6 +41,7 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser):
     email = models.EmailField(max_length=255, unique=True)
     full_name = models.CharField(max_length=255, blank=True, null=True)
+    url = models.SlugField(unique=True, verbose_name='URL')
     active = models.BooleanField(default=True)   # can login
     staff = models.BooleanField(default=False)
     admin = models.BooleanField(default=False)

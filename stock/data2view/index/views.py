@@ -1,10 +1,13 @@
 from django.shortcuts import redirect, render, HttpResponse, Http404
-from stock.models import Worker
+from stock.models import Worker,User
 import json
 from stock.data2view.user.action import UserContent, update_track
 
 
 def IndexView(request):
+    if request.user.is_authenticated:
+        user = User.objects.get(email=request.user)
+        return redirect('stock:index_store',url=user.url)
     content = UserContent(request)
     content['linkimage'] = 'http://wwww.google.com'
     return render(request, 'stock/index/index.html', content)

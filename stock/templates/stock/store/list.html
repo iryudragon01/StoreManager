@@ -6,8 +6,9 @@
 
       {% if user.is_authenticated %}
       <h1>list of worker</h1>
+
+          <ul id='worker'>
           {% if workers %}
-              <ul id='worker'>
                 <li>
                   <p>username</p>
                   <p>supervisor</p>
@@ -31,20 +32,21 @@
                           {% ifequal worker.access_level 99 %}
                             worker
                           {% endifequal %}</p>
-                        <p><a href="{% url 'stock:edit_worker' worker.id %}">edit</a></p>
+                        <p><a href="{% url 'stock:edit_worker' request.user.url worker.id %}">edit</a></p>
                       </li>
                       <div class="clear">
 
                       </div>
                 {% endfor %}
-                {% if add_worker %}
-                <li><p><a href="{% url 'stock:create_worker' %}">add new worker</a></p></li>
-                <div class="clear">
-
-                </div>
-                {% endif %}
-              </ul>
           {% endif %}
+          {% if add_worker %}
+          {% else %}
+          <li><p><a href="{% url 'stock:create_worker' request.user.url %}">add new worker</a></p></li>
+          <div class="clear">
+
+          </div>
+          {% endif %}
+        </ul>
 
       {% else %}
       <p>not login</p>

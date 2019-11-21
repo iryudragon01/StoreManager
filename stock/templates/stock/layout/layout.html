@@ -7,7 +7,14 @@
     <script type="text/javascript" src="{% static 'stock/scripts/main.js' %}">
 
     </script>
-    <title>StoreManager</title>
+    <title>
+      {% if title %}
+          {{title}}
+      {% else %}
+      StoreManager
+      {% endif %}
+
+    </title>
   </head>
   <body>
     {% if user.is_authenticated%}

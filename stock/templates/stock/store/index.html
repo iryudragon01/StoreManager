@@ -1,0 +1,6 @@
+{% extends 'stock/layout/layout.html' %}
+
+{% block content %}
+<a href="{% url 'stock:list_worker' request.user.url %}">manage worker</a>
+index for {{request.user}}
+{% endblock content %}
