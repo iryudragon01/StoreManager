@@ -21,6 +21,7 @@ urlpatterns = [
     path('store/<str:url>/create/worker/',storeview.WorkerCreateView, name='create_worker'),
     path('stork/<str:url>/edit/worker/<int:pk>',storeview.EditWorkerView, name='edit_worker'),
     path('store/<str:url>/login/worker/', storeview.WorkerLoginView, name='login_worker'),
+    path('store/<str:url>/display/sum/',storeview.SumView, name='display_sum'),
 
     # user
     path('create_user/',userview.CreateView,name='create_user'),

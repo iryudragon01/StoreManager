@@ -42,7 +42,7 @@ class UserAdminCreationForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['email', 'full_name']
+        fields = ['email', 'url', 'full_name']
 
     def clean_confirm_password(self):
         # Check that the password and confirm password entries match

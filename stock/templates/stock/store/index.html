@@ -1,6 +1,11 @@
 {% extends 'stock/layout/layout.html' %}
 
 {% block content %}
+{% if worker %}
 <a href="{% url 'stock:list_worker' request.user.url %}">manage worker</a>
-index for {{request.user}}
+
+{% else %}
+login worker
+{% endif %}
+
 {% endblock content %}

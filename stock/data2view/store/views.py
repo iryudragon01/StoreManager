@@ -1,17 +1,17 @@
-from django.shortcuts import render,redirect
-from stock.models import User,Worker
+from django.shortcuts import render, redirect
+from stock.models import User, Worker
 from . import forms
-import hashlib,json
+import hashlib, json
 from stock.data2view.user import action
 from django.contrib.auth import authenticate
 
 
-def IndexView(request,url):
+def IndexView(request, url):
     context = {}
-    return render(request, 'stock/store/index.html',context)
+    return render(request, 'stock/store/index.html', context)
 
 
-def ListView(request,url):
+def ListView(request, url):
     content = {"title": url}
     supervisor = User.objects.filter(email=request.user)
     if supervisor.exists():
@@ -81,13 +81,13 @@ def WorkerLoginView(request, url):
     return render(request, 'stock/user/login_worker.html', content)
 
 
-def EditWorkerView(request,url, pk):
+def EditWorkerView(request, url, pk):
     query = User.objects.filter(url=url)
     if not query.exists():
         return redirect('stock:index')
     user = query[0]
     content = {}
-    query = Worker.objects.filter(supervisor=user,id=pk)
+    query = Worker.objects.filter(supervisor=user, id=pk)
     if not query.exists:
         return redirect('stock:index_store')
     worker = query[0]
@@ -98,13 +98,13 @@ def EditWorkerView(request,url, pk):
                 user = authenticate(email=request.user, password=request.POST['verifypwd'])
                 if user:
                     worker.delete()
-                    return redirect('stock:list_worker',url=request.user.url)
+                    return redirect('stock:list_worker', url=request.user.url)
                 else:
                     content['message'] = 'cannot delete password wrong'
             else:
                 worker.access_level = form.cleaned_data['access_level']
                 worker.save()
-                return redirect('stock:list_worker',url=request.user.url)
+                return redirect('stock:list_worker', url=request.user.url)
     content['form'] = form
     content['name'] = worker.username
     return render(request, 'stock/store/edit_worker.html', content)
@@ -114,3 +114,7 @@ def LogoutView(request):
     # request.session.remove()
     return redirect('stock:index')
 
+
+def SumView(request,url):
+
+    return render(request, 'stock/store/display/sum.html')

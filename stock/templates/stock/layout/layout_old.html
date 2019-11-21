@@ -1,0 +1,33 @@
+{% entends 'stock/layout/base.html' %}
+{}
+{% load static %}
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+
+    </script>
+    <title>
+      {% if title %}
+          {{title}}
+      {% else %}
+      StoreManager
+      {% endif %}
+
+    </title>
+  </head>
+  <body>
+    {% if user.is_authenticated%}
+      {% include 'stock/layout/menubar_userlogin.html' %}
+    {% else %}
+      {% include 'stock/layout/menubar.html' %}
+    {% endif %}
+
+
+    {% block content %}
+    {% endblock content %}
+
+
+      {% block script %}
+      {% endblock script %}
+  </body>
+</html>

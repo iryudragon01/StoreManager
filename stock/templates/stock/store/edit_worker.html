@@ -2,20 +2,20 @@
 
 {% block content %}
 {% load static %}
-<div class="warning">
+<div class="text-danger bg-dark">
   {{message}}
 </div>
   <div id="container">
-    <h1>{{name}}</h1>
+    <h1 class="text-primary bg-dark">{{name}}</h1>
     <form class="form" action="" method="post">
       {% csrf_token %}
 
       {{form.as_p}}
       <input  class="hidden"  name='verifypwd' id="verifypwd">
       <button class="hidden" type="submit" id="DELETE" name="DELETE"></button>
-      <button type="button" onclick="vrfpwd(event,'DELETE')">DELETE</button>
-      <button type="submit" name="update">Update</button>
-      <button type="button" onclick="history.go(-1)">Back</button>
+      <button class="btn btn-danger" type="button" onclick="vrfpwd(event,'DELETE')">DELETE</button>
+      <button class="btn btn-primary" type="submit" name="update">Update</button>
+      <button class="btn btn-success" type="button" onclick="history.go(-1)">Back</button>
     </form>
     </div>
 
