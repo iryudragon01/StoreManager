@@ -12,8 +12,7 @@ def UserContent(request):
     return content
 
 
-def update_track(request, length=55):
+def update_track(length=55):
     letters = string.ascii_lowercase
-    newtrack = ''.join(random.choice(letters) for i in range(length))
-    request.session['track'] = newtrack
-    return newtrack
+    track = ''.join(random.choice(letters) for i in range(length))
+    return track

@@ -2,7 +2,7 @@
   <ul>
     <li onclick="javascript:location.href='{% url 'stock:index_store' request.user.url %}'">Home</li>
     <li onclick="javascript:location.href='{% url 'stock:display_sum' request.user.url %}'">summary</li>
-    <li onclick="javascript:location.href='{% url 'stock:logout_worker' request.session.url %}'">logout</li>
+    <li onclick="javascript:location.href='{% url 'stock:logout_user' %}'">logout</li>
 </header>
 <div class="clear">
 

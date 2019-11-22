@@ -2,13 +2,21 @@
 {% block content %}
 <div class="message">
   <p>  Login page</p>
-    <p>{{message}}</p>
+    <p class="text-danger">{{message}}</p>
 </div>
 <form class="" action="" method="post">
   {% csrf_token %}
-  {{form.as_p}}
-  <input type="hidden" name="parent" value="{{parent}}">
-  <button type="submit" name="button">create</button>
+  <table class="table col-5">
+
+    {{form.as_table}}
+    <tr>
+      <th></th>
+      <td>
+          <button class='btn btn-primary' type="submit" name="button">Login</button>
+      </td>
+    </tr>
+  </table>
+  <input class="d-none" type="text" name="parent" value="{{parent}}">
 
 </form>
 
