@@ -116,8 +116,6 @@ def EditWorkerView(request, url, pk):
             return redirect('stock:index')
     if not queries.is_worker_exists(url=url, pk=pk):
         return redirect('stock:list_worker', url=url)
-    
-    print('edit worker page   pass')    
     worker = queries.get_worker(url=url, pk=pk)
     form = forms.EditWorkerForm(request.POST or None, instance=worker)
     if request.POST:
@@ -134,7 +132,7 @@ def EditWorkerView(request, url, pk):
                 worker.save()
                 return redirect('stock:list_worker', url=request.user.url)
     content['form'] = form
-    content['name'] = worker.username
+    content['value'] = worker.access_level
     return render(request, 'stock/store/edit_worker.html', content)
 
 

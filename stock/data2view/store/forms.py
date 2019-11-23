@@ -3,12 +3,12 @@ from stock.models import User,Worker
 
 
 class WorkerCreateForm(forms.Form):
-    username = forms.CharField(
+    username = forms.SlugField(
         label='worker id',
         max_length=200,
         min_length=1,
         widget=forms.TextInput(
-            attrs={'placeholder': 'worker id'}
+            attrs={'placeholder': 'worker id','class':'form-control border border-primary'}
         )
 
     )
@@ -17,7 +17,7 @@ class WorkerCreateForm(forms.Form):
         max_length=200,
         min_length=1,
         widget=forms.PasswordInput(
-            attrs={'placeholder': 'password for worker'}
+            attrs={'placeholder': 'password for worker','class':'form-control border border-primary '}
         )
 
     )
@@ -26,10 +26,11 @@ class WorkerCreateForm(forms.Form):
         max_length=200,
         min_length=1,
         widget=forms.PasswordInput(
-            attrs={'placeholder': 'confirm password'}
+            attrs={'placeholder': 'confirm password','class':'form-control border border-primary border border-primary'}
         )
 
     )
+    
 
     def clean(self):
         cleaned_data = super(WorkerCreateForm, self).clean()

@@ -16,30 +16,31 @@ def get_user(url):
 def is_worker_exists(url, username=False, pk=False):
     if not is_url_exists(url):
         return False
-    query = Worker.objects.all()
-    if pk:
-        query = Worker.objects.filter(
-            supervisor=get_user(url),
-            username=username
-        )
-    if username:
+    if pk is not False:
         query = Worker.objects.filter(
             supervisor=get_user(url),
             id=pk
         )
-    if query.exists():
-        return True
-    else:
-        return False
+        if query.exists():
+            return True
+    if username is not False:
+        query = Worker.objects.filter(
+            supervisor=get_user(url),
+            username=username
+        )
+        if query.exists():
+            return True
+    print('sadddddd')        
+    return False
 
 
 def get_worker(url, username=False, pk=False):
-    if pk:
+    if pk is False:
         return Worker.objects.get(
             supervisor=get_user(url),
             username=username
         )
-    if username:
+    if username is False:
         return Worker.objects.get(
             supervisor=get_user(url),
             pk=pk

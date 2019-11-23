@@ -50,7 +50,9 @@
           {% if add_worker %}
           {% else %}
           <div class="row border border-primary">
-            <a href="{% url 'stock:create_worker' request.user.url %}">add new worker</a>
+            <a href="{% url 'stock:create_worker' request.user.url %}">
+              <button type="button" class="btn btn-success">add new worker</button>
+              </a>
           </div>
           {% endif %}
 
