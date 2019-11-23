@@ -11,7 +11,22 @@ def bootstrap(request):
 
 
 def StoreSearchView(request):
-    return render(request, 'stock/store/search.html')
+    content = {}
+    if request.POST:
+        if 'search' in request.POST:
+            search = request.POST['search']
+            users = User.objects.all()
+            list = []
+            for user in users:
+                print(search, '  ',user.url)
+                if search in user.url:
+                    list.append(user.url)
+            if list:
+                content['urls'] = list
+            else:
+                content['message'] = 'page not found'
+
+    return render(request, 'stock/store/search.html',content)
 
 
 def IndexView(request, url):

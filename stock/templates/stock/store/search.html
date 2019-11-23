@@ -1,5 +1,30 @@
 {% extends 'stock/layout/layout.html' %}
 
 {% block content %}
-search page
+<form class="" action="" method="post">
+  {% csrf_token %}
+  <div class="row form-group">
+        <div class="col-12 col-md-5">
+          <input class="form-control border-right-0 mx-0" type="text" name="search" value="" placeholder="search for url">
+        </div>
+        <div class="col-12 col-md-2 border-left-0 mx-0">
+          <button class="btn btn-primary" type="submit" name="button">Search</button>
+        </div>
+  </div>
+</form>
+{% if message %}
+<div class="row alert alert-danger">
+  {{message}}
+</div>
+{% endif %}
+{% for url in urls %}
+<div class="row">
+  <div class="col-12 col-md-2">
+
+  </div>
+  <div class="col-12 col-md-4">
+    <a href="{% url 'stock:index_store' url %}">{{url}}</a>
+  </div>
+</div>
+{% endfor %}
 {% endblock content %}
