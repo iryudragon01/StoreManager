@@ -2,4 +2,9 @@
 
 {% block content %}
 <p class="btn btn-success">test</p>
+
+{{request.session.worker}}--user<br><br><br>
+{{request.session.supervisor}}--supervisor<br><br><br>
+{{request.session.track}}--track<br><br>
+{{request.session.url}}--url<br>
 {% endblock content %}

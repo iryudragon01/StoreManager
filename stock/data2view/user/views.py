@@ -10,16 +10,17 @@ def CreateView(request):
     content = {}
     if request.POST:
         if form.is_valid():
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password']
+            url = form.cleaned_data['url']
             form.save()
-            user = authenticate(
-                email=form.cleaned_data['email'],
-                password=form.cleaned_data['password']
-            )
+            user = authenticate(email=email, password=password)
             login(request, user)
             request.session['supervisor'] = user.email
-            return redirect('stock:index_store',url=user.url)
+            action.create_worker(request, url, username='admin', password=password)
+            action.set_worker(request,url,'admin')
+            return redirect('stock:index_store', url=user.url)
     content['form'] = form
-    print(form.errors)
     return render(request, 'stock/user/create.html', content)
 
 
@@ -33,7 +34,8 @@ def LoginView(request):
             if user:
                 login(request, user)
                 request.session['supervisor'] = user.email
-                return redirect('stock:index_store',url=user.url)
+                action.set_worker(request,user.url,'admin')
+                return redirect('stock:index_store', url=user.url)
 
     content = {'form': form}
 
@@ -41,7 +43,6 @@ def LoginView(request):
 
 
 def LogoutView(request):
+    action.clear_worker(request)
     logout(request)
     return redirect('stock:index')
-
-

@@ -13,6 +13,8 @@
                 <a class="nav-link" href="{% url 'stock:index_store' request.user.url %}">Home</a></li>
                   <li class="nav-item">
                     <a class="nav-link" href="{% url 'stock:list_worker' request.user.url %}">Worker</a></li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="{% url 'stock:create_item' request.user.url %}">Item</a></li>
               <li class="nav-item" >
                 <a class="nav-link" href="{% url 'stock:display_sum' request.user.url %}">summary</a>
                </li>

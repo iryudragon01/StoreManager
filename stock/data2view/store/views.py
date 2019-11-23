@@ -1,34 +1,33 @@
 from django.shortcuts import render, redirect
 from stock.models import User, Worker
 from . import forms
-import hashlib, json
-from stock.data2view.user import action
+import hashlib
 from django.contrib.auth import authenticate
-from . import queries
+from stock.data2view.user import queries, action
 
 
 def bootstrap(request):
-
     return render(request, 'stock/store/bootstrap.html')
 
-def StoreSearchView(request):
 
+def StoreSearchView(request):
     return render(request, 'stock/store/search.html')
+
 
 def IndexView(request, url):
     context = {}
-    if not queries.is_url_exists(url):            # check if url is exists
+    if not queries.is_url_exists(url):  # check if url is exists
         return redirect('stock:index')
-    if not request.user.is_authenticated:       # if not authenticated
+    if not request.user.is_authenticated:  # if not authenticated
         if 'worker' in request.session:
             if queries.is_session_match(
-                track=request.session['track'],
-                username=request.session['worker'],
-                url=url
+                    track=request.session['track'],
+                    username=request.session['worker'],
+                    url=url
             ):
                 pass
             else:
-                return redirect('stock:login_worker',url=url)
+                return redirect('stock:login_worker', url=url)
 
         else:
             return redirect('stock:login_worker', url=url)
@@ -62,13 +61,9 @@ def WorkerCreateView(request, url):
     if request.POST:
         if form.is_valid():
             if not queries.is_worker_exists(url=url, username=form.cleaned_data['username']):
-                worker = Worker(
-                    supervisor=user,
-                    username=form.cleaned_data['username'],
-                    password=hashlib.sha512(
-                        form.cleaned_data['password'].encode('utf-8')).hexdigest()
-                )
-                worker.save()
+                action.create_worker(request, url,
+                                     username=form.cleaned_data['username'],
+                                     password=form.cleaned_data['password'])
                 return redirect('stock:list_worker', url=user.url)
             else:
                 content['message'] = 'already exists'
@@ -79,6 +74,7 @@ def WorkerCreateView(request, url):
 
 
 def WorkerLoginView(request, url):
+    action.clear_worker(request)
     content = {}
     if not queries.is_url_exists(url=url):
         redirect('stock:index')
@@ -94,13 +90,7 @@ def WorkerLoginView(request, url):
                 password=hashlib.sha512(password.encode('utf-8')).hexdigest()
             )
             if worker.exists():
-                track = action.update_track(55)
-                update = worker[0]
-                update.track = track
-                update.save()
-                request.session['worker'] = update.username
-                request.session['track'] = track
-                request.session['url'] = url
+                action.set_worker(request,url,worker[0].username)
                 return redirect('stock:display_sum', url=url)
             else:
                 content['message'] = 'use or password not correct'
@@ -141,15 +131,9 @@ def EditWorkerView(request, url, pk):
 
 
 def LogoutWorkerView(request, url):
-    try:
-        del request.session['worker']
-        del request.session['track']
-        del request.session['url']
-    except KeyError:
-        pass
+    action.clear_worker(request)
     return redirect('stock:index_store', url=url)
 
 
-def SumView(request,url):
-
+def SumView(request, url):
     return render(request, 'stock/store/display/sum.html')

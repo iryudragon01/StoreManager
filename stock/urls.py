@@ -12,7 +12,7 @@ urlpatterns = [
     path('', indexview.IndexView, name='index'),
 
     # item
-    path('create/item/', itemview.CreateView, name='create_item'),
+    path('store/<str:url>/create/item/', itemview.CreateView, name='create_item'),
 
     # store
     path('store/', storeview.StoreSearchView, name='search_store'),

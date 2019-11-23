@@ -30,7 +30,6 @@ def is_worker_exists(url, username=False, pk=False):
         )
         if query.exists():
             return True
-    print('sadddddd')        
     return False
 
 
