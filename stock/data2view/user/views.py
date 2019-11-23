@@ -19,6 +19,7 @@ def CreateView(request):
             request.session['supervisor'] = user.email
             return redirect('stock:index_store',url=user.url)
     content['form'] = form
+    print(form.errors)
     return render(request, 'stock/user/create.html', content)
 
 

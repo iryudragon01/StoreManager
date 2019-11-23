@@ -1,16 +1,100 @@
 {% extends 'stock/layout/layout.html' %}
 {% block content %}
-<div id="container">
-  <h1>Registration</h1>
-  <div class="message">
-    <p>  {{message}}</p>
-  </div>
-  <form class="form" action="" method="post">
-    {% csrf_token %}
-    {{form.as_p}}
-    <button type="submit" name="button">create</button>
-
-  </form>
+<div class="alert alert-primary text-center">
+  User Registration
 </div>
+<form class="form-group" action="" method="post">
+  {% csrf_token %}
+  <div class="form-group row">
+    <label for="email" class="col-sm-2 col-form-label">Email</label>
+    <div class="col-sm-10">
+      {% for field in form %}
+        {% ifequal forloop.counter 1 %}
+            {% if field.errors %}
+            <input type="email" class="form-control is-invalid" name="email">
+            <div class="invalid-feedback">
+              {{ field.errors.as_text }}
+            </div>
+            {% else %}
+            <input type="email" class="form-control" name="email">
+            {% endif %}
+        {% endifequal %}
+      {% endfor %}
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="full_name" class="col-sm-2 col-form-label">Full Name</label>
+    <div class="col-sm-10">
+      {% for field in form %}
+        {% ifequal forloop.counter 2 %}
+            {% if field.errors %}
+            <input type="text" class="form-control is-invalid" name="full_name">
+            <div class="invalid-feedback">
+              {{ field.errors.as_text }}
+            </div>
+            {% else %}
+            <input type="text" class="form-control" name="full_name">
+            {% endif %}
+        {% endifequal %}
+      {% endfor %}
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="url" class="col-sm-2 col-form-label">URL</label>
+    <div class="col-sm-10">
+      {% for field in form %}
+        {% ifequal forloop.counter 3 %}
+            {% if field.errors %}
+            <input type="text" class="form-control is-invalid" name="url">
+            <div class="invalid-feedback">
+              {{ field.errors.as_text }}
+            </div>
+            {% else %}
+            <input type="text" class="form-control" name="url">
+            {% endif %}
+        {% endifequal %}
+      {% endfor %}
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="password" class="col-sm-2 col-form-label">Password</label>
+    <div class="col-sm-10">
+      {% for field in form %}
+        {% ifequal forloop.counter 4 %}
+            {% if field.errors %}
+            <input type="password" class="form-control is-invalid" name="password">
+            <div class="invalid-feedback">
+              {{ field.errors.as_text }}
+            </div>
+            {% else %}
+            <input type="password" class="form-control" name="password">
+            {% endif %}
+        {% endifequal %}
+      {% endfor %}
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="confirm password" class="col-sm-2 col-form-label">confirm Password</label>
+    <div class="col-sm-10">
+      {% for field in form %}
+        {% ifequal forloop.counter 5 %}
+            {% if field.errors %}
+            <input type="password" class="form-control is-invalid" name="confirm_password">
+            <div class="invalid-feedback">
+              {{ field.errors.as_text }}
+            </div>
+            {% else %}
+            <input type="password" class="form-control" name="confirm_password">
+            {% endif %}
+        {% endifequal %}
+      {% endfor %}
+    </div>
+  </div>
+  <div class="row">
+    <p class="col-3"></p>
+    <button class="btn btn-primary col-3" type="submit" name="button">Sign up</button>
+  </div>
+
+</form>
 
 {% endblock content %}

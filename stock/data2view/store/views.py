@@ -116,6 +116,8 @@ def EditWorkerView(request, url, pk):
             return redirect('stock:index')
     if not queries.is_worker_exists(url=url, pk=pk):
         return redirect('stock:list_worker', url=url)
+    
+    print('edit worker page   pass')    
     worker = queries.get_worker(url=url, pk=pk)
     form = forms.EditWorkerForm(request.POST or None, instance=worker)
     if request.POST:

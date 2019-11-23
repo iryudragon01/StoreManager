@@ -6,23 +6,31 @@
 
       {% if user.is_authenticated %}
       <h1>list of worker</h1>
-
-          <ul id='worker'>
           {% if workers %}
-                <li>
-                  <p>username</p>
-                  <p>supervisor</p>
-                  <p>access_level</p>
-                  <p>edit</p>
-                </li>
-                <div class="clear">
+  <div class="row mb-5 border border-secondary">
+        <div class="col-12 col-md-3">
+            username
+        </div>
+        <div class="col-12 col-md-3">
+          supervisor
+        </div>
+        <div class="col-12 col-md-3">
+          access_level
+        </div>
+        <div class="col-12 col-md-3">
+          edit
+        </div>
 
-                </div>
+  </div>
                 {% for worker in workers %}
-                    <li>
-                        <p>{{worker.username}}</p>
-                        <p>{{worker.supervisor}}</p>
-                        <p>
+                <div class="row border border-secondary">
+                      <div class="col-12 col-md-3">
+                          {{worker.username}}
+                      </div>
+                      <div class="col-12 col-md-3">
+                        {{worker.supervisor}}
+                      </div>
+                      <div class="col-12 col-md-3">
                           {% ifequal worker.access_level 1 %}
                             admin
                           {% endifequal %}
@@ -32,21 +40,19 @@
                           {% ifequal worker.access_level 99 %}
                             worker
                           {% endifequal %}</p>
-                        <p><a class="btn btn-success" href="{% url 'stock:edit_worker' request.user.url worker.id %}">edit</a></p>
-                      </li>
-                      <div class="clear">
-
                       </div>
+                      <div class="col-12 col-md-3">
+                          <a class="btn btn-success" href="{% url 'stock:edit_worker' request.user.url worker.id %}">edit</a>
+                      </div>
+                </div>
                 {% endfor %}
           {% endif %}
           {% if add_worker %}
           {% else %}
-          <li><p><a href="{% url 'stock:create_worker' request.user.url %}">add new worker</a></p></li>
-          <div class="clear">
-
+          <div class="row border border-primary">
+            <a href="{% url 'stock:create_worker' request.user.url %}">add new worker</a>
           </div>
           {% endif %}
-        </ul>
 
       {% else %}
       <p>not login</p>

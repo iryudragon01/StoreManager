@@ -12,7 +12,7 @@ urlpatterns = [
     path('', indexview.IndexView, name='index'),
 
     # item
-    path('create_item/', itemview.CreateView, name='create_item'),
+    path('create/item/', itemview.CreateView, name='create_item'),
 
     # store
     path('store/', storeview.StoreSearchView, name='search_store'),
@@ -24,9 +24,9 @@ urlpatterns = [
     path('store/<str:url>/display/sum/', storeview.SumView, name='display_sum'),
 
     # user
-    path('create_user/', userview.CreateView, name='create_user'),
-    path('login_user/', userview.LoginView, name='login_user'),
-    path('logout/', userview.LogoutView, name='logout_user'),
+    path('create/user/', userview.CreateView, name='create_user'),
+    path('login/user/', userview.LoginView, name='login_user'),
+    path('logout/user/', userview.LogoutView, name='logout_user'),
 
     # AJAX
     path('ajax/', indexview.AjaxView, name='ajax'),
