@@ -11,6 +11,9 @@ def bootstrap(request):
 
     return render(request, 'stock/store/bootstrap.html')
 
+def StoreSearchView(request):
+
+    return render(request, 'stock/store/search.html')
 
 def IndexView(request, url):
     context = {}

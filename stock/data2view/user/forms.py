@@ -86,6 +86,7 @@ class LoginForm(forms.Form):
     def clean(self):
         email = self.cleaned_data.get('email')
         user = User.objects.filter(email=email)
+
         if not user.exists():
             raise forms.ValidationError(email + " is don't exists!!")
         password = self.cleaned_data['password']

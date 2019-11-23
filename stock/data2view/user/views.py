@@ -24,9 +24,6 @@ def CreateView(request):
 
 def LoginView(request):
     form = forms.LoginForm(request.POST or None)
-    content = {
-        'form': form
-    }
     if request.POST:
         if form.is_valid():
             email = form.cleaned_data['email']
@@ -36,6 +33,9 @@ def LoginView(request):
                 login(request, user)
                 request.session['supervisor'] = user.email
                 return redirect('stock:index_store',url=user.url)
+
+    content = {'form': form}
+
     return render(request, 'stock/user/login.html', content)
 
 

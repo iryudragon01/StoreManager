@@ -15,6 +15,7 @@ urlpatterns = [
     path('create_item/', itemview.CreateView, name='create_item'),
 
     # store
+    path('store/', storeview.StoreSearchView, name='search_store'),
     path('store/<str:url>', storeview.IndexView, name='index_store'),
     path('store/<str:url>/list/worker', storeview.ListView, name='list_worker'),
     path('store/<str:url>/create/worker/', storeview.WorkerCreateView, name='create_worker'),

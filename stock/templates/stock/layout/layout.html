@@ -8,8 +8,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-
-    <link rel="stylesheet" href="{% static 'stock/css/main.css' %}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
     <title>{% if title %}
@@ -21,13 +19,17 @@
   </head>
   <body>
     {% if user.is_authenticated%}
-      {% include 'stock/layout/menubar_worker.html' %}
+      {% include 'stock/layout/menubar_authenticate.html' %}
     {% else %}
       {% include 'stock/layout/menubar-bootstrap.html' %}
     {% endif %}
-{% block content %}
+    <div class="container">
 
-{% endblock content %}
+  {% block content %}
+
+  {% endblock content %}
+
+    </div>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
