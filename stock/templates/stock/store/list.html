@@ -7,30 +7,31 @@
       {% if user.is_authenticated %}
       <h1>list of worker</h1>
           {% if workers %}
-  <div class="row mb-5 border border-secondary">
-        <div class="col-12 col-md-3">
-            username
+  <div class="row mb-2 border border-secondary">
+        <div class="col-12 col-md-2">
+            <h4>username</h4>
         </div>
-        <div class="col-12 col-md-3">
-          supervisor
+        <div class="col-12 col-md-6">
+          <h4>supervisor</h4>
         </div>
-        <div class="col-12 col-md-3">
-          access_level
+        <div class="col-12 col-md-2">
+          <h4>access_level<h4>
         </div>
-        <div class="col-12 col-md-3">
-          edit
+        <div class="col-12 col-md-2">
+          <h4>edit<h4>
         </div>
 
   </div>
                 {% for worker in workers %}
                 <div class="row border border-secondary">
-                      <div class="col-12 col-md-3">
-                          {{worker.username}}
+                      <div class="col-12 col-md-2">
+                          <h4>{{worker.username}}</h4>
                       </div>
-                      <div class="col-12 col-md-3">
-                        {{worker.supervisor}}
+                      <div class="col-12 col-md-6">
+                        <h4>{{worker.supervisor}}</h4>
                       </div>
-                      <div class="col-12 col-md-3">
+                      <div class="col-12 col-md-2">
+                        <h4>
                           {% ifequal worker.access_level 1 %}
                             admin
                           {% endifequal %}
@@ -39,9 +40,9 @@
                           {% endifequal %}
                           {% ifequal worker.access_level 99 %}
                             worker
-                          {% endifequal %}</p>
+                          {% endifequal %}</h4>
                       </div>
-                      <div class="col-12 col-md-3">
+                      <div class="col-12 col-md-2">
                           <a class="btn btn-success" href="{% url 'stock:edit_worker' request.user.url worker.id %}">edit</a>
                       </div>
                 </div>

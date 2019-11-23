@@ -48,10 +48,11 @@ def ListView(request, url):
 
 
 def WorkerCreateView(request, url):
-    queries = User.objects.filter(email=request.user.email)
-    if not queries.exists():
+    content = {}
+    current_user = User.objects.filter(email=request.user.email)
+    if not current_user.exists():
         return redirect('stock:login_user')
-    user = queries[0]
+    user = current_user[0]
     worker = Worker.objects.filter(supervisor=user)
     if worker.exists():
         if worker.count() >= user.under_worker:
@@ -60,16 +61,19 @@ def WorkerCreateView(request, url):
     form = forms.WorkerCreateForm(request.POST or None)
     if request.POST:
         if form.is_valid():
-            worker = Worker(
-                supervisor=user,
-                username=form.cleaned_data['username'],
-                password=hashlib.sha512(
-                    form.cleaned_data['password'].encode('utf-8')).hexdigest()
-            )
-            worker.save()
-            return redirect('stock:list_worker', url=user.url)
+            if not queries.is_worker_exists(url=url, username=form.cleaned_data['username']):
+                worker = Worker(
+                    supervisor=user,
+                    username=form.cleaned_data['username'],
+                    password=hashlib.sha512(
+                        form.cleaned_data['password'].encode('utf-8')).hexdigest()
+                )
+                worker.save()
+                return redirect('stock:list_worker', url=user.url)
+            else:
+                content['message'] = 'already exists'
 
-    content = {'form': form}
+    content['form'] = form
 
     return render(request, 'stock/store/create_worker.html', content)
 

@@ -5,11 +5,12 @@
       Create worker for {{request.user}}
   </div>
 </div>
+{% if message %}
 <div class="row">
   <div class="col-12 text-center alert alert-warning mt-1">
-    {{form.non_field_errors}}
+    {{message}}
   </div>
-
+{% endif %}
 </div>
 <form class="" action="" method="post">
   {% csrf_token %}

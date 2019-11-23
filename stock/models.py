@@ -86,7 +86,7 @@ class User(AbstractBaseUser):
 class Worker(models.Model):
     objects: models.Manager
     supervisor = models.ForeignKey(User, on_delete=models.CASCADE)
-    username = models.CharField(max_length=200)
+    username = models.SlugField(max_length=200 )
     password = models.CharField(max_length=200)
     date_log = models.DateTimeField(auto_now=True)
     track = models.CharField(max_length=255)     # track connection

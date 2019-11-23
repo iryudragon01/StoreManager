@@ -31,7 +31,7 @@ class WorkerCreateForm(forms.Form):
 
     )
     
-
+    
     def clean(self):
         cleaned_data = super(WorkerCreateForm, self).clean()
         password = cleaned_data.get('password')
