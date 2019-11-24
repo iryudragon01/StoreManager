@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth import get_user_model
-from stock.models import Worker
+from stock.models import Worker,Item
 
 # Register your models here.
 User = get_user_model()
@@ -15,3 +15,4 @@ class UserAdmin(admin.ModelAdmin):
 
 admin.site.register(User, UserAdmin)
 admin.site.register(Worker)
+admin.site.register(Item)

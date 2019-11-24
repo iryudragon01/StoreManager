@@ -95,6 +95,9 @@ class Worker(models.Model):
 
                                                )  # 1-99
 
+    def __str__(self):
+        return self.username
+
 
 class Item(models.Model):
     objects: models.manager
@@ -102,10 +105,11 @@ class Item(models.Model):
     name = models.CharField(max_length=200)
     price = models.PositiveIntegerField()
     type = models.PositiveSmallIntegerField(choices=[(1, 'Non Stock'), (2, 'Air pay'), (3, 'Stock')])
-    is_active = models.PositiveSmallIntegerField(choices=[(0, 'inactive'), (1, 'active')])
-    user_access = models.PositiveSmallIntegerField()
+    is_active = models.PositiveSmallIntegerField(default=1,
+                                                 choices=[(0, 'inactive'), (1, 'active')],)
+    user_access = models.PositiveSmallIntegerField(default=1)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
@@ -118,6 +122,9 @@ class Stock(models.Model):
     edit_user = models.CharField(max_length=200)
     edit_time = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return self.item.name
+
 
 class Sale(models.Model):
     objects: models.manager
@@ -127,3 +134,6 @@ class Sale(models.Model):
     create_time = models.DateTimeField(auto_now=True)
     edit_user = models.CharField(max_length=200)
     edit_time = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.item.name

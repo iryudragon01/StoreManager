@@ -1,5 +1,13 @@
 {% extends 'stock/layout/layout.html' %}
 {% block content %}
+{% if message %}
+  <div class="row alert ">
+    <div class="col-12 text-center">
+      <h3>{{message}}</h3>
+    </div>
+
+  </div>
+{% endif %}
 <div class="row">
   <div class="col-12 text-center alert alert-primary mt-2">
       Create item

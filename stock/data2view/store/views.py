@@ -18,7 +18,6 @@ def StoreSearchView(request):
             users = User.objects.all()
             list = []
             for user in users:
-                print(search, '  ',user.url)
                 if search in user.url:
                     list.append(user.url)
             if list:
@@ -35,6 +34,7 @@ def IndexView(request, url):
         return redirect('stock:index')
     if not request.user.is_authenticated:  # if not authenticated
         if 'worker' in request.session:
+            print('worker : ', request.session['worker'])
             if queries.is_session_match(
                     track=request.session['track'],
                     username=request.session['worker'],
@@ -145,7 +145,8 @@ def EditWorkerView(request, url, pk):
     return render(request, 'stock/store/edit_worker.html', content)
 
 
-def LogoutWorkerView(request, url):
+def WorkerLogoutView(request, url):
+    print('logout worker')
     action.clear_worker(request)
     return redirect('stock:index_store', url=url)
 

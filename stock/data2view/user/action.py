@@ -23,7 +23,7 @@ def hash_pwd(password):
     return hash_pass
 
 
-def create_worker(request, url, username, password,access_level=99):
+def create_worker(request, url, username, password, access_level=99):
     user = queries.get_user(url)
     worker = Worker(supervisor=user,
                     username=username,
@@ -49,11 +49,22 @@ def set_worker(request, url, username):
 
 def clear_worker(request):
     try:
-        del request.session['supervisor']
         del request.session['worker']
         del request.session['track']
         del request.session['url']
         del request.session['access_level']
     except KeyError:
-        pass
+        print(' some thing error on clear_worker in stock.data2view.user.action')
     return
+
+
+def is_worker_genius(request,url,access_level=False):
+    if 'worker' not in request.session:
+        return False
+    if not queries.is_worker_exists(url,username=request.session['worker']):
+        return False
+    worker = queries.get_worker(url,username=request.session['worker'])
+    if access_level is not False:
+        if worker.access_level > access_level:
+            return False
+    return worker.track == request.session['track']

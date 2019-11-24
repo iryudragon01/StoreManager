@@ -1,0 +1,79 @@
+{% extends 'stock/layout/layout.html' %}
+{% block content %}
+{% if message %}
+  <div class="row alert alert-danger ">
+    <div class="col-12 text-center">
+      <h3>{{message}}</h3>
+    </div>
+
+  </div>
+{% endif %}
+<div class="row">
+  <div class="col-12 text-center alert alert-primary mt-2">
+      Edit {{item.name}}
+  </div>
+</div>
+<form class="" action="" method="post">
+  {% csrf_token %}
+  {% for field in form %}
+    <div class="form-group mt-3">
+      <div class="row  text-center">
+        <div class="col-12 col-md-2">
+            {{ field.label_tag }}
+        </div>
+        <div class="col-12 col-md-7">
+            {{ field }}
+        </div>
+      </div>
+      <div class="row  text-center">
+        <div class="col-12">
+                {{ field.errors }}
+        </div>
+          <div class="col-12">
+                  {% if field.help_text %}
+                  <p class="help">{{ field.help_text|safe }}</p>
+                  {% endif %}
+          </div>
+      </div>
+    </div>
+{% endfor %}
+
+<div class="row">
+  <div class="col-4 col-md-3">
+    <button type="button" class="btn btn-danger" data-toggle="modal" data-target=".verify-delete">Delete</button>
+  </div>
+  <div class="col-4 col-md-3">
+      <button class="btn btn-primary" type="submit" name="update">Update</button>
+  </div>
+  <div class="col-4 col-md-3">
+      <button class="btn btn-success" type="button" onclick="history.go(-1)">Back</button>
+  </div>
+  </div>
+
+  <div class="modal fade verify-delete mt-3" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+  <div class="modal-content">
+        <div class="row">
+          <div class="col-12">
+            <h3 class="form-control bg-dark text-white text-center">verify password for delete {{item.name}}</h3>
+          </div>
+
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <input class="form-control" type="password" name="verifypwd" id=verifypwd" placeholder="user password for delete worker">
+          </div>
+        </div>
+        <div class="row">
+          <div class="px-5 mx-auto">
+            <button type="submit" class="btn btn-danger" name="DELETE">Delete</button>
+          </div>
+
+        </div>
+  </div>
+  </div>
+  </div>
+
+</form>
+
+{% endblock content %}

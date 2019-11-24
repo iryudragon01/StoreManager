@@ -1,0 +1,75 @@
+{% extends 'stock/layout/layout.html' %}
+{% block content %}
+{% if message %}
+  <div class="row alert ">
+    <div class="col-12 text-center">
+      <h3><h4>{{message}}</h4></h3>
+    </div>
+
+  </div>
+{% endif %}
+<div class="row">
+  <div class="col-12 text-center alert alert-primary mt-2">
+      <h3>Item list</h3>
+  </div>
+</div>
+
+<div class="row mb-2 border">
+  <div class="col-6 col-md-4">
+    <h4>name</h4>
+  </div>
+  <div class="col-2 col-md-2">
+    <h4>price</h4>
+  </div>
+  <div class="col-6 col-md-2">
+      <h4>type</h4>
+  </div>
+  <div class="col-2 col-md-2">
+      <h4>edit</h4>
+  </div>
+
+</div>
+{% for item in items %}
+
+
+<div class="row my-1 border">
+  <div class="col-6 col-md-4">
+    <h4>{{item.name}}</h4>
+  </div>
+  <div class="col-2 col-md-2">
+    <h4>{{item.price}}</h4>
+  </div>
+  <div class="col-6 col-md-2">
+      {% ifequal item.type 1 %}
+          <h4>Ticket</h4>
+      {% endifequal %}
+      {% ifequal item.type 2 %}
+          <h4>Air pay</h4>
+          {% endifequal %}
+      {% ifequal item.type 3 %}
+          <h4>Food</h4>
+          {% endifequal %}
+  </div>
+  <div class="col-2 col-md-2">
+        <a class="btn text-dark"
+        href="{% url 'stock:edit_item' request.session.url item.id %}">
+        <h4>edit</h4></a>
+  </div>
+
+</div>
+
+
+{% endfor %}
+
+
+<div class="row">
+  <div class="col-12 col-md-1">
+
+  </div>
+  <div class="col-12 col-md-8">
+    <a class="btn btn-primary w-50 mx-auto" href="{% url 'stock:create_item' request.session.url %}">Add</a>
+  </div>
+
+</div>
+
+{% endblock content %}

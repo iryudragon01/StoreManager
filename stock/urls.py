@@ -13,14 +13,20 @@ urlpatterns = [
 
     # item
     path('store/<str:url>/create/item/', itemview.CreateView, name='create_item'),
+    path('store/<str:url>/list/item/', itemview.ListView, name='list_item'),
+    path('store/<str:url>/edit/item/<int:pk>/', itemview.EditView, name='edit_item'),
 
     # store
     path('store/', storeview.StoreSearchView, name='search_store'),
     path('store/<str:url>', storeview.IndexView, name='index_store'),
+
+    # worker
     path('store/<str:url>/list/worker', storeview.ListView, name='list_worker'),
     path('store/<str:url>/create/worker/', storeview.WorkerCreateView, name='create_worker'),
     path('stork/<str:url>/edit/worker/<int:pk>', storeview.EditWorkerView, name='edit_worker'),
     path('store/<str:url>/login/worker/', storeview.WorkerLoginView, name='login_worker'),
+    path('store/<str:url>/logout/worker/', storeview.WorkerLogoutView, name='logout_worker'),
+
     path('store/<str:url>/display/sum/', storeview.SumView, name='display_sum'),
 
     # user
