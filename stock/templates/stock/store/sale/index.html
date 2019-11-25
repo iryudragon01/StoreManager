@@ -47,9 +47,32 @@
               <div class="col-2">
                   <button class="btn float-right acbtn" name="{{form.name}}" id="{{forloop.counter}}">Add</button>
               </div>
+              <div class="col-1">
+                <button type="button" onclick="javascript:document.getElementById('exampleModalLabel').innerHTML='{{form.name}}'" data-target='#detail' data-toggle="modal">detail</button>
+
+              </div>
         </div>
     {% endfor %}
 {% endif %}
+<div class="modal fade" id='detail'>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+<h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+  <span aria-hidden="true">&times;</span>
+</button>
+</div>
+<div class="modal-body">
+...
+</div>
+<div class="modal-footer">
+<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+<button type="button" class="btn btn-primary">Save changes</button>
+</div>
+</div>
+</div>
+</div>
 {% endblock content %}
 {% block script %}
 {% include 'stock/store/sale/app.html' %}
