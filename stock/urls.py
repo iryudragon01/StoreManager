@@ -1,6 +1,7 @@
 from django.urls import path
 from . import views
-from .data2view.item import views as itemview
+from .data2view.store.item import views as itemview
+from .data2view.store.sale import views as saleview
 from .data2view.user import views as userview
 from stock.data2view.index import views as indexview
 from stock.data2view.store import views as storeview
@@ -10,7 +11,10 @@ app_name = 'stock'
 urlpatterns = [
     path('bootstrap/', storeview.bootstrap, name='testbootstrap'),
     path('', indexview.IndexView, name='index'),
-
+    #sale
+    path('store/<str:url>/store/sale/index' , saleview.IndexView, name="index_sale"),
+    path('store/<str:url>/store/sale/list' , saleview.ListView, name="list_sale"),
+    path('ajax/<str:url>/sale', saleview.AjaxSaleView,name='ajax_sale'),
     # item
     path('store/<str:url>/create/item/', itemview.CreateView, name='create_item'),
     path('store/<str:url>/list/item/', itemview.ListView, name='list_item'),

@@ -130,9 +130,10 @@ class Sale(models.Model):
     objects: models.manager
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     volume = models.PositiveIntegerField()
-    create_user = models.CharField(max_length=200)
+    user = models.SlugField(null=True,blank=True)
+    create_worker = models.CharField(max_length=200)
     create_time = models.DateTimeField(auto_now=True)
-    edit_user = models.CharField(max_length=200)
+    edit_worker = models.CharField(max_length=200)
     edit_time = models.DateTimeField(auto_now=True)
 
     def __str__(self):

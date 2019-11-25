@@ -1,0 +1,23 @@
+{% extends 'stock/layout/layout.html' %}
+
+
+{% block content %}
+{% if message %}
+<div class="row">
+  <div class="col-12 alert alert-warning ">
+    <h3 class="text-center text-dark">{{message}}</h3>
+  </div>
+</div>
+{% endif %}
+
+
+{% if sales %}
+    {% for sale in sales %}
+        <div class="row">
+              <div class="col-12 border">
+                {{sale.item.name}}-{{sale.volume}}
+              </div>
+        </div>
+    {% endfor %}    
+{% endif %}
+{% endblock content %}

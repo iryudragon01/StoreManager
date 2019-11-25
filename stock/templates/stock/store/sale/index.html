@@ -1,0 +1,103 @@
+{% extends 'stock/layout/layout.html' %}
+
+
+{% block content %}
+{% if message %}
+<div class="row">
+  <div class="col-12 alert alert-warning ">
+    <h3 class="text-center text-dark">{{message}}</h3>
+  </div>
+</div>
+{% endif %}
+
+
+{% if forms %}
+        <div class="row mt-3 mb-2">
+            <div class="col-3 col-md-2">
+                <h4 class="text-right">Name</h4>
+            </div>
+            <div class="col-2">
+                <h4 class="text-right">start</h4>
+            </div>
+            <div class="col-2">
+                <h4 class="text-right">end</h4>
+            </div>
+            <div class="col-2">
+                <h4 class="text-right">sale</h4>
+            </div>
+            <div class="col-2">
+                <h4>Add</h4>
+            </div>
+        </div>
+    {% for form in forms %}
+        <div class="row border p-1">
+              <div class="col-3 col-md-2">
+                <h6 class="text-right">{{form.name}}</h6>
+              </div>
+              <div class="col-2">
+                  <h6 class="text-right" id="first_{{forloop.counter}}">{{form.first}}</h6>
+              </div>
+              <div class="col-2">
+                  <h6 class="text-right" id="now_{{forloop.counter}}">{{form.now}}</h6>
+              </div>
+              <div class="col-2">
+                  <h6 class="text-right" id="sale_{{forloop.counter}}">{{form.sale}}</h6>
+              </div>
+              <div class="col-2">
+                  <button class="btn float-right acbtn" name="{{form.name}}" id="{{forloop.counter}}">Add</button>
+              </div>
+        </div>
+    {% endfor %}
+{% endif %}
+{% endblock content %}
+{% block script %}
+
+
+<script type="text/javascript">
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+$(document).ready(function (){
+  var csrftoken = getCookie('csrftoken');function csrfSafeMethod(method) {
+      // these HTTP methods do not require CSRF protection
+      return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+  }
+  $.ajaxSetup({
+      beforeSend: function(xhr, settings) {
+          if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+              xhr.setRequestHeader("X-CSRFToken", csrftoken);
+          }
+      }
+  });
+    $('.acbtn').click(function (){
+        myid=this.id
+        $.ajax({
+          type:'POST',
+          url:'{% url 'stock:ajax_sale' request.session.url %}',
+          dataType:'json',
+          data:{'name':this.name,'value':this.innerHTML},
+          success:function (data){
+            document.getElementById('first_'+myid).innerHTML=data['first']
+            document.getElementById('now_'+myid).innerHTML=data['now']
+            document.getElementById('sale_'+myid).innerHTML=data['sale']
+          }
+
+        })
+    })
+
+})
+
+</script>
+{% endblock script %}

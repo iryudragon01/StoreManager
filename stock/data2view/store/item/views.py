@@ -22,7 +22,7 @@ def CreateView(request,url):
             content['message'] = 'form is not valid'  
 
     content['form'] = form
-    return render(request, 'stock/item/create.html',content)
+    return render(request, 'stock/store/item/create.html',content)
 
 def EditView(request,url,pk):
     if not action.is_worker_genius(request,url,access_level=1):
@@ -47,7 +47,7 @@ def EditView(request,url,pk):
                 return redirect('stock:list_item',url)
 
     content['form']=form
-    return render(request, 'stock/item/edit.html',content)
+    return render(request, 'stock/store/item/edit.html',content)
 
 def ListView(request,url):
     if not action.is_worker_genius(request,url,access_level=1):
@@ -55,4 +55,4 @@ def ListView(request,url):
     content = {}
     items = Item.objects.filter(user=queries.get_user(url))  
     content['items'] = items
-    return render(request, 'stock/item/list.html',content)  
+    return render(request, 'stock/store/item/list.html',content)  
