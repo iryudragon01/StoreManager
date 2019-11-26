@@ -1,4 +1,18 @@
 <script type="text/javascript">
+  function enableButton(element){
+    if (element.classList.contains('btn-outline-primary')){
+      element.classList.remove('btn-outline-primary')
+      element.classList.add('btn-outline-secondary')
+      element.innerHTML='Sale Disable'
+      element.value=0
+    }else{
+      element.innerHTML="Sale Enable"
+      element.classList.add('btn-outline-primary')
+      element.classList.remove('btn-outline-secondary')
+      element.value=1
+    }
+
+  }
 
   function getCookie(name) {
       var cookieValue = null;
@@ -33,11 +47,11 @@
             type:'POST',
             url:'{% url 'stock:ajax_sale' request.session.url %}',
             dataType:'json',
-            data:{'name':this.name,'value':this.innerHTML},
+            data:{'name':this.name,'value':'Add'},
             success:function (data){
               document.getElementById('first_'+myid).innerHTML=data['first']
               document.getElementById('now_'+myid).innerHTML=data['now']
-              document.getElementById('sale_'+myid).innerHTML=data['sale']
+              document.getElementById(myid).innerHTML=data['sale']
             }
 
           })

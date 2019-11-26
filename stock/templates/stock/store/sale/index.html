@@ -15,19 +15,21 @@
 {% if forms %}
         <div class="row mt-3 mb-2">
             <div class="col-3 col-md-2">
-                <h4 class="text-right">Name</h4>
+                <h6 class="text-right btn w-100">Name</h6>
             </div>
             <div class="col-2">
-                <h4 class="text-right">start</h4>
+                <h4 class="btn text-right w-100">start</h4>
             </div>
             <div class="col-2">
-                <h4 class="text-right">end</h4>
+                <h4 class="text-right btn w-100">end</h4>
             </div>
             <div class="col-2">
-                <h4 class="text-right">sale</h4>
+              <button class="btn btn-outline-secondary w-100 " id='enableButton'
+              onclick="enableButton(this)" value='0'>Sale Disalbe</button>
             </div>
-            <div class="col-2">
-                <h4>Add</h4>
+            <div class="col-1">
+              <button type="button" name="button">detail</button>
+
             </div>
         </div>
     {% for form in forms %}
@@ -42,13 +44,10 @@
                   <h6 class="text-right" id="now_{{forloop.counter}}">{{form.now}}</h6>
               </div>
               <div class="col-2">
-                  <h6 class="text-right" id="sale_{{forloop.counter}}">{{form.sale}}</h6>
-              </div>
-              <div class="col-2">
-                  <button class="btn float-right acbtn" name="{{form.name}}" id="{{forloop.counter}}">Add</button>
+                  <button class="btn w-100 acbtn" name="{{form.name}}" id="{{forloop.counter}}">{{form.sale}}</button>
               </div>
               <div class="col-1">
-                <button type="button" onclick="javascript:document.getElementById('exampleModalLabel').innerHTML='{{form.name}}'" data-target='#detail' data-toggle="modal">detail</button>
+                <button type="button" onclick="javascript:document.getElementById('exampleModalLabel').innerHTML='{{form.name}}'" data-target='#detail' data-toggle="modal" id="detail_{{forloop.counter}}">detail</button>
 
               </div>
         </div>
