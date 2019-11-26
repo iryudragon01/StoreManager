@@ -24,8 +24,8 @@
                 <h4 class="text-right btn w-100">end</h4>
             </div>
             <div class="col-2">
-              <button class="btn btn-outline-secondary w-100 " id='enableButton'
-              onclick="enableButton(this)" value='0'>Sale Disalbe</button>
+              <button class="btn btn-outline-secondary w-100 " id='enableBTN' value="0"
+              >Disable</button>
             </div>
             <div class="col-1">
               <button type="button" name="button">detail</button>
@@ -71,6 +71,27 @@
 </div>
 </div>
 </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalview" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ModalLabel">verify password for {{request.session.worker}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <input class="form-control" type="password" id='verifypwd' value="">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id='verifypwdBTN'>Submit</button>
+      </div>
+    </div>
+  </div>
 </div>
 {% endblock content %}
 {% block script %}

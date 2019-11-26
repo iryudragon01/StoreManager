@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect,Http404,HttpResponse
 from stock.models import Sale,Item
 from stock.data2view.user import action,queries
-from . import forms
+from . import forms,ajax
 from django.db.models import Sum
 from django.utils import timezone
 import json
@@ -11,6 +11,10 @@ def IndexView(request,url):
         return redirect('stock:index_store',url = request.session['url'])
     content = {}
     worker = queries.get_worker(url, username=request.session['worker'])
+    if request.POST:
+        if request.is_ajax():
+            data = json.dumps(ajax.SaleEnableButton(request,worker))
+            return HttpResponse(data,content_type='application/json')
     items = Item.objects.filter(
         user=worker.supervisor )
     
@@ -22,6 +26,8 @@ def IndexView(request,url):
         content['forms'] = form_list
     else:
         content['message']   = 'you donot have any item'    
+    worker.enable_sale=False
+    worker.save()    
     return render(request, 'stock/store/sale/index.html',content)
 
 def ListView(request,url):
@@ -50,6 +56,9 @@ def AjaxSaleView(request,url):
         if request.is_ajax(): 
             if not action.is_worker_genius(request,url):
                 raise Http404
+            worker = queries.get_worker(url,username=request.session['worker'])
+            if not worker.enable_sale:
+                return HttpResponse(json.dumps({'errors':'worker disable'}),content_type='application/json')
             name = request.POST.get('name') or 'no name data'
             value = request.POST.get('value') or 'no value data'
             items = Item.objects.filter(name=name)
