@@ -28,7 +28,7 @@
               >Disable</button>
             </div>
             <div class="col-1">
-              <button type="button" name="button">detail</button>
+              <button class="btn  w-100" type="button" name="button">detail</button>
 
             </div>
         </div>
@@ -47,8 +47,7 @@
                   <button class="btn w-100 acbtn" name="{{form.name}}" id="{{forloop.counter}}">{{form.sale}}</button>
               </div>
               <div class="col-1">
-                <button type="button" onclick="javascript:document.getElementById('exampleModalLabel').innerHTML='{{form.name}}'" data-target='#detail' data-toggle="modal" id="detail_{{forloop.counter}}">detail</button>
-
+                <a href="{% url 'stock:detail_sale' request.session.url form.id %}">detail</a>
               </div>
         </div>
     {% endfor %}

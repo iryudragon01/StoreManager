@@ -30,6 +30,33 @@ def IndexView(request,url):
     worker.save()    
     return render(request, 'stock/store/sale/index.html',content)
 
+
+def DetailView(request,url,pk):
+    content = {}
+    if not action.is_worker_genius(request,url):
+        return redirect('stock:index_store',url = request.session['url'])    
+    worker =queries.get_worker(url,request.session['worker'])
+    item= Item.objects.filter(id=pk)
+    if item.exists():
+        sale_1 = Sale.objects.filter(
+                    item=item[0],
+                    create_worker=worker.username,
+                    create_time__gt=worker.date_log,
+                    create_time__lte=timezone.now()
+                    )
+        if sale_1.exists():
+            content['sales']=sale_1  
+        else:
+            print('sale donot exists')            
+
+
+    return render(request,'stock/store/sale/detail.html',content)
+
+def DeleteView(request,url,pk):
+
+
+    return redirect('stock:index_sale',url=request.session['url'])    
+
 def ListView(request,url):
     if not action.is_worker_genius(request,url):
         return redirect('stock:index')
@@ -106,6 +133,7 @@ def salelist(request,item,url):
         now=  sale_2.aggregate(Sum('volume'))['volume__sum'] 
     sale=now-first   
     return {
+        'id':item.id,
         'name':item.name,
         'first':first,
         'now':now,

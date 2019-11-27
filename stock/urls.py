@@ -13,6 +13,8 @@ urlpatterns = [
     path('', indexview.IndexView, name='index'),
     #sale
     path('store/<str:url>/store/sale/index' , saleview.IndexView, name="index_sale"),
+    path('store/<str:url>/store/sale/detail/<int:pk>' , saleview.DetailView, name="detail_sale"),
+    path('store/<str:url>/store/sale/delete/<int:pk>' , saleview.DeleteView, name="delete_sale"),
     path('store/<str:url>/store/sale/list' , saleview.ListView, name="list_sale"),
     path('ajax/<str:url>/sale', saleview.AjaxSaleView,name='ajax_sale'),
     # item

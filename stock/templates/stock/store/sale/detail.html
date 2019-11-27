@@ -1,0 +1,58 @@
+{% extends 'stock/layout/layout.html' %}
+
+
+{% block content %}
+{% if message %}
+<div class="row">
+  <div class="col-12 alert alert-warning ">
+    <h3 class="text-center text-dark">{{message}}</h3>
+  </div>
+</div>
+{% endif %}
+
+
+
+{% if sales %}
+<div class="row">
+  <div class="col-4">
+    <h4>name</h4>
+
+  </div>
+  <div class="col-5">
+    <h4>date</h4>
+
+  </div>
+  <div class="col-1">
+    <h4>volume</h4>
+
+  </div>
+  <div class="col-2">
+    <h4 class="text-right">edit</h4>
+
+  </div>
+
+</div>
+    {% for sale in sales %}
+
+<div class="row border">
+  <div class="col-4">
+    <h6>{{sale.item.name}}</h6>
+
+  </div>
+  <div class="col-5">
+    <h6>{{sale.create_time}}</h6>
+
+  </div>
+  <div class="col-1">
+    <h6>{{sale.volume}}</h6>
+
+  </div>
+  <div class="col-2">
+    <a class="btn w-100 " href="{% url 'stock:delete_sale' request.session.url sale.id %}">Delete</a>
+
+  </div>
+
+</div>
+    {% endfor %}
+{% endif %}
+{% endblock content %}

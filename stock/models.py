@@ -88,8 +88,8 @@ class Worker(models.Model):
     supervisor = models.ForeignKey(User, on_delete=models.CASCADE)
     username = models.SlugField(max_length=200 )
     password = models.CharField(max_length=200)
-    enable_sale = models.BooleanField(default=True)
-    date_log = models.DateTimeField(auto_now=True)
+    enable_sale = models.BooleanField()
+    date_log = models.DateTimeField()
     track = models.CharField(max_length=255)     # track connection
     access_level = models.PositiveIntegerField(default=99,
                                                choices=[(1,'admin'),(10,'superuser'),(99,'worker')],

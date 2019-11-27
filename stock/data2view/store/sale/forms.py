@@ -1,6 +1,7 @@
 from django import forms
+from stock.models import Sale
 
-class ItemFrom(forms.Form):
+class ItemForm(forms.Form):
     name= forms.TextInput()
     start = forms.IntegerField()
     now = forms.IntegerField()
@@ -8,3 +9,8 @@ class ItemFrom(forms.Form):
     price = forms.IntegerField()
     money = forms.IntegerField()
     sum = forms.IntegerField()
+
+class SaleForm(forms.ModelForm):
+    class Meta:
+        model = Sale    
+        fields = ['id']
