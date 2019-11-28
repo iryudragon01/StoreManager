@@ -12,40 +12,29 @@ def bootstrap(request):
 
 def StoreSearchView(request):
     content = {}
+    search=''
+    if 'url' in request.GET:
+        search=request.GET.get('url')
     if request.POST:
         if 'search' in request.POST:
             search = request.POST['search']
-            users = User.objects.all()
-            list = []
-            for user in users:
-                if search in user.url:
-                    list.append(user.url)
-            if list:
-                content['urls'] = list
-            else:
+    users = User.objects.all()
+    list = []
+    for user in users:
+        if search in user.url:
+            list.append(user.url)
+        if list:
+           content['urls'] = list
+        else:
+            if request.POST or 'url' in request.GET:
                 content['message'] = 'page not found'
+
 
     return render(request, 'stock/store/search.html',content)
 
 
 def IndexView(request, url):
     context = {}
-    if not queries.is_url_exists(url):  # check if url is exists
-        return redirect('stock:index')
-    if not request.user.is_authenticated:  # if not authenticated
-        if 'worker' in request.session:
-            print('worker : ', request.session['worker'])
-            if queries.is_session_match(
-                    track=request.session['track'],
-                    username=request.session['worker'],
-                    url=url
-            ):
-                pass
-            else:
-                return redirect('stock:login_worker', url=url)
-
-        else:
-            return redirect('stock:login_worker', url=url)
     return render(request, 'stock/store/index.html', context)
 
 
@@ -146,7 +135,6 @@ def EditWorkerView(request, url, pk):
 
 
 def WorkerLogoutView(request, url):
-    print('logout worker')
     action.clear_worker(request)
     return redirect('stock:index_store', url=url)
 

@@ -1,11 +1,5 @@
 {% extends 'stock/layout/layout.html' %}
 
 {% block content %}
-{% ifequal request.sission.url request.user.url %}
-<a href="{% url 'stock:list_worker' request.user.url %}">manage worker</a>
-
-{% else %}
-login worker
-{% endifequal %}
-
+hello {{request.session.worker}}
 {% endblock content %}
