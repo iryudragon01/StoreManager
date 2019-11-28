@@ -28,6 +28,7 @@ def StoreSearchView(request):
         else:
             if request.POST or 'url' in request.GET:
                 content['message'] = 'page not found'
+                content['search']=search
 
 
     return render(request, 'stock/store/search.html',content)
@@ -38,15 +39,16 @@ def IndexView(request, url):
     return render(request, 'stock/store/index.html', context)
 
 
-def ListView(request, url):
+def ListView(request, url):    
     content = {"title": url}
-    supervisor = User.objects.filter(email=request.user)
-    if supervisor.exists():
-        workers = Worker.objects.filter(supervisor=supervisor[0])
-        if workers.exists():
-            content['workers'] = workers
-            if workers.count() >= supervisor[0].under_worker:
-                content['add_worker'] = 'worker exceed limit'
+    if not request.user.is_authenticated:
+        return redirect('stock:index_store',request.session['url'])
+    supervisor = User.objects.get(email=request.user)
+    workers = Worker.objects.filter(supervisor=supervisor[0])
+    if workers.exists():
+        content['workers'] = workers
+        if workers.count() >= supervisor.under_worker:
+            content['add_worker'] = 'worker exceed limit'
     return render(request, 'stock/store/list.html', content)
 
 
@@ -81,7 +83,9 @@ def WorkerLoginView(request, url):
     action.clear_worker(request)
     content = {}
     if not queries.is_url_exists(url=url):
-        redirect('stock:index')
+        res = redirect('stock:search_store')
+        res['location'] += '?url='+url
+        return res
     user = queries.get_user(url=url)
     form = forms.WorkerLoginForm(request.POST or None)
     if request.POST:
@@ -95,7 +99,7 @@ def WorkerLoginView(request, url):
             )
             if worker.exists():
                 action.set_worker(request,url,worker[0].username)
-                return redirect('stock:display_sum', url=url)
+                return redirect('stock:index_store', url=url)
             else:
                 content['message'] = 'use or password not correct'
                 # response['Location'] += '?track='+track

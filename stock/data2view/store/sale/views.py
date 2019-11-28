@@ -7,8 +7,6 @@ from django.utils import timezone
 import json
 
 def IndexView(request,url):
-    if not action.is_worker_genius(request,url):
-        return redirect('stock:index_store',url = request.session['url'])
     content = {}
     worker = queries.get_worker(url, username=request.session['worker'])
     if request.POST:
@@ -32,9 +30,7 @@ def IndexView(request,url):
 
 
 def DetailView(request,url,pk):
-    content = {}
-    if not action.is_worker_genius(request,url):
-        return redirect('stock:index_store',url = request.session['url'])    
+    content = {} 
     worker =queries.get_worker(url,request.session['worker'])
     item= Item.objects.filter(id=pk)
     if item.exists():
@@ -53,13 +49,14 @@ def DetailView(request,url,pk):
     return render(request,'stock/store/sale/detail.html',content)
 
 def DeleteView(request,url,pk):
-
-
+    sale = Sale.objects.filter(id=pk)
+    if sale.exists():
+        if sale[0].create_worker == request.session['worker']:
+            delsale = sale[0]
+            delsale.delete()
     return redirect('stock:index_sale',url=request.session['url'])    
 
 def ListView(request,url):
-    if not action.is_worker_genius(request,url):
-        return redirect('stock:index')
     content = {}        
     if request.POST:
         print('post')    

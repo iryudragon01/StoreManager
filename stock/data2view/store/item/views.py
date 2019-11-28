@@ -6,7 +6,7 @@ from stock.data2view.user import queries,action
 
 def CreateView(request,url):
     if not action.is_worker_genius(request,url,access_level=1):
-        return redirect('stock:index_store',url=url)        
+        return redirect('stock:store_index',url=url)  
     content = {}
     instance = Item(user=queries.get_user(url))
     form = forms.CreateItemForm(request.POST or None, instance=instance)

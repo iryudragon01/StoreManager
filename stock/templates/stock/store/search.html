@@ -5,7 +5,7 @@
   {% csrf_token %}
   <div class="row form-group">
         <div class="col-12 col-md-5">
-          <input class="form-control border-right-0 mx-0" type="text" name="search" value="" placeholder="search for url">
+          <input class="form-control border-right-0 mx-0" type="text" name="search" value="{{search}}" placeholder="search for url">
         </div>
         <div class="col-12 col-md-2 border-left-0 mx-0">
           <button class="btn btn-primary" type="submit" name="button">Search</button>

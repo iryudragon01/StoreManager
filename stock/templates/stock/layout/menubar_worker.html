@@ -11,14 +11,13 @@
 
             <ul class="navbar-nav">
               <li class="nav-item" >
-                <a class="nav-link" href="{% url 'stock:index_store' request.session.url %}">Home</a>
+                <a class="nav-link" href="{% url 'stock:index_store' request.session.url %}">Home</a></li>
+              <li class="nav-item" >
+                <a class="nav-link" href="{% url 'stock:index_sale' request.session.url %}">Sale</a>
               </li>
               <li class="nav-item" >
                 <a class="nav-link" href="{% url 'stock:logout_worker' request.session.url %}">Logout</a>
                </li>
-              <li class="nav-item" >
-                <a class="nav-link" href="#">Item</a>
-              </li>
         </div>
 
       </div>
