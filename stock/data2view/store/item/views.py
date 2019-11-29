@@ -5,8 +5,6 @@ from stock.data2view.user import queries,action
 
 
 def CreateView(request,url):
-    if not action.is_worker_genius(request,url,access_level=1):
-        return redirect('stock:store_index',url=url)  
     content = {}
     instance = Item(user=queries.get_user(url))
     form = forms.CreateItemForm(request.POST or None, instance=instance)
@@ -26,9 +24,9 @@ def CreateView(request,url):
 
 def EditView(request,url,pk):
     if not action.is_worker_genius(request,url,access_level=1):
-        return redirect('stock:store_index',url=url)
+        return redirect('stock:index_store',url=url)
     if not scripts.is_item_exists(url,id=pk):
-        return redirect('stock:store_index', url=url)  
+        return redirect('stock:index_store', url=url)  
     item= Item.objects.get(id=pk,user=queries.get_user(url))
     content = {}      
     content['item'] = item
@@ -51,7 +49,7 @@ def EditView(request,url,pk):
 
 def ListView(request,url):
     if not action.is_worker_genius(request,url,access_level=1):
-        return redirect('stock:store_index',url=url)
+        return redirect('stock:index_store',url=url)
     content = {}
     items = Item.objects.filter(user=queries.get_user(url))  
     content['items'] = items

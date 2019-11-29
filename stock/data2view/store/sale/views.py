@@ -40,7 +40,7 @@ def DetailView(request,url,pk):
     if item.exists():
         sale_1 = Sale.objects.filter(
                     item=item[0],
-                    create_worker=worker.username,
+                    worker_id=worker.id,   
                     create_time__gt=worker.date_log,
                     create_time__lte=timezone.now()
                     )
@@ -61,14 +61,10 @@ def DeleteView(request,url,pk):
     return redirect('stock:index_sale',url=request.session['url'])    
 
 def ListView(request,url):
-    content = {}        
-    if request.POST:
-        print('post')    
-    else:
-        print('get')    
+    content = {}         
     worker = queries.get_worker(url,username=request.session['worker'])    
     sales = Sale.objects.filter(
-        user=worker.supervisor,
+        user_id=worker.supervisor.id,
         create_worker=worker.username,
         create_time__gt=worker.date_log
     )
@@ -89,12 +85,15 @@ def AjaxSaleView(request,url):
                 return HttpResponse(json.dumps({'errors':'worker disable'}),content_type='application/json')
             name = request.POST.get('name') or 'no name data'
             value = request.POST.get('value') or 'no value data'
-            items = Item.objects.filter(name=name)
+            items = Item.objects.filter(name=name,
+                                user=queries.get_user(url))
             if items.exists():
                 sale = Sale(
                     item=items[0],
                     volume=1,
-                    user=queries.get_user(url).email,
+                    parent_id=items[0].id,
+                    user_id=queries.get_user(url).id,
+                    worker_id=queries.get_worker(url,username=request.session['worker']).id,
                     create_worker=queries.get_worker(url,username=request.session['worker']),
                     create_time=timezone.now(),
                     edit_worker=queries.get_worker(url,username=request.session['worker']),
@@ -106,7 +105,6 @@ def AjaxSaleView(request,url):
             else:
                 result = {'fail':'norecorded'}  
             data = json.dumps(result)
-            print(data)
             return HttpResponse(data, content_type='application/json')
         else:
             raise Http404
@@ -114,30 +112,26 @@ def AjaxSaleView(request,url):
         raise Http404    
 
 def salelist(request,item,url):
-    first=0
-    now=0
-    sale=0    
     worker =queries.get_worker(url,request.session['worker'])
     sale_1 = Sale.objects.filter(
-                item=item,
-                create_worker=worker.username,
+                parent_id=item.id,  
+                worker_id=worker.id,           
                 create_time__lt=worker.date_log
                 )
     sale_2 = Sale.objects.filter(
-                item=item,
-                create_worker=worker.username,
-                create_time__lt=timezone.now()
-                )
-    if sale_1.exists():
-        first=  sale_1.aggregate(Sum('volume'))['volume__sum']  
-    if sale_2.exists():
-        now=  sale_2.aggregate(Sum('volume'))['volume__sum'] 
-    sale=now-first   
+        parent_id=item.id,
+        worker_id=worker.id,        
+    )
+    print(sale_2.count(),' item ',item.name)
+    first = sale_1.aggregate(Sum('volume'))['volume__sum'] if sale_1.exists() else 0
+    now   = sale_2.aggregate(Sum('volume'))['volume__sum'] if sale_2.exists() else 0
+    print('worker_id',worker.id)
+    print('now',sale_2)
     return {
         'id':item.id,
         'name':item.name,
         'first':first,
         'now':now,
-        'sale':sale
+        'sale':(now-first)
     }
         
