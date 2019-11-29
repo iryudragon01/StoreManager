@@ -37,7 +37,7 @@
             dataType:'json',
             data:{'name':this.name,'value':'Add'},
             success:function (data){
-              if(data['first']){
+              if(data['first']>=0){
               document.getElementById('first_'+myid).innerHTML=data['first']
               document.getElementById('now_'+myid).innerHTML=data['now']
               document.getElementById(myid).innerHTML=data['sale']
@@ -56,13 +56,13 @@
         $('#modalview').modal('hide')
         verifypwd = document.getElementById('verifypwd').value
         document.getElementById('verifypwd').value=''
-        mybutton=document.getElementById('enableBTN')
         $.ajax({
             type:'POST',
             url:'',
             dataType:'json',
             data:{'verifypwd':verifypwd},
             success:function(data){
+              mybutton=document.getElementById('enableBTN')
               mybutton.classList.remove('btn-outline-secondary')
               mybutton.classList.remove('btn-outline-success')
               mybutton.innerHTML=data['enableBTN']
@@ -83,6 +83,7 @@
             dataType:'json',
             data:{'enableBTN':'Disable'},
             success:function(data){
+              mybutton=document.getElementById('enableBTN')
               mybutton.classList.remove('btn-outline-secondary')
               mybutton.classList.remove('btn-outline-success')
               mybutton.innerHTML=data['enableBTN']

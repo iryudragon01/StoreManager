@@ -24,8 +24,8 @@
                 <h4 class="text-right btn w-100">end</h4>
             </div>
             <div class="col-2">
-              <button class="btn btn-outline-secondary w-100 " id='enableBTN' value="0"
-              >Disable</button>
+              <button class="btn {{enableBTN.class}} w-100 " id='enableBTN' value="{{enableBTN.value}}"
+              >{{enableBTN.label}}</button>
             </div>
             <div class="col-1">
               <button class="btn  w-100" type="button" name="button">detail</button>
@@ -35,19 +35,19 @@
     {% for form in forms %}
         <div class="row border p-1">
               <div class="col-3 col-md-2">
-                <h6 class="text-right">{{form.name}}</h6>
+                <h6 class="text-right w-100">{{form.name}}</h6>
               </div>
               <div class="col-2">
-                  <h6 class="text-right" id="first_{{forloop.counter}}">{{form.first}}</h6>
+                  <h6 class="text-right btn" id="first_{{forloop.counter}}">{{form.first}}</h6>
               </div>
               <div class="col-2">
-                  <h6 class="text-right" id="now_{{forloop.counter}}">{{form.now}}</h6>
+                  <h6 class="text-right btn" id="now_{{forloop.counter}}">{{form.now}}</h6>
               </div>
               <div class="col-2">
                   <button class="btn w-100 acbtn" name="{{form.name}}" id="{{forloop.counter}}">{{form.sale}}</button>
               </div>
               <div class="col-1">
-                <a href="{% url 'stock:detail_sale' request.session.url form.id %}">detail</a>
+                <a class="btn" href="{% url 'stock:detail_sale' request.session.url form.id %}">detail</a>
               </div>
         </div>
     {% endfor %}

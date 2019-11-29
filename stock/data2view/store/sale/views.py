@@ -24,7 +24,11 @@ def IndexView(request,url):
         content['forms'] = form_list
     else:
         content['message']   = 'you donot have any item'    
-    worker.enable_sale=False
+    BTNDisplay= "Enable" if worker.enable_sale else "Disable"
+    BTNclass= "btn-outline-success" if worker.enable_sale else "btn-outline-secondary"
+    BTNValue =  1 if worker.enable_sale else 0
+    EnableBTN={'label':BTNDisplay,'value':BTNValue,'class':BTNclass}
+    content['enableBTN']=EnableBTN
     worker.save()    
     return render(request, 'stock/store/sale/index.html',content)
 
