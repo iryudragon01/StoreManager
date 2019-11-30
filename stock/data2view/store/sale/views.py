@@ -5,7 +5,6 @@ from . import forms, ajax
 from django.db.models import Sum
 import json
 from datetime import datetime
-from django.utils import timezone
 
 
 def IndexView(request, url):
@@ -17,15 +16,11 @@ def IndexView(request, url):
             return HttpResponse(data, content_type='application/json')
     items = Item.objects.filter(
         user=worker.supervisor)
-
-    form_list = []
     if items.exists():
         content['items'] = items
-        for item in items:
-            form_list.append(salelist(request, item))
-        content['forms'] = form_list
+        content['forms'] = list(map(lambda item: sale_list(request, item), items))
     else:
-        content['message'] = 'you donot have any item'
+        content['message'] = 'you do not have any item'
     BTNDisplay = "Enable" if worker.enable_sale else "Disable"
     BTNclass = "btn-outline-success" if worker.enable_sale else "btn-outline-secondary"
     BTNValue = 1 if worker.enable_sale else 0
@@ -72,11 +67,11 @@ def ListView(request, url):
     worker = queries.get_worker(url, username=request.session['worker'])
     start_time = worker.date_log
     form = forms.ListTime(request.POST or None)
-    creater_id = queries.get_worker(url,username=request.session['worker']).id
+    creater_id = queries.get_worker(url, username=request.session['worker']).id
     if request.POST:
         if form.is_valid():
-            start_time= form.cleaned_data['getDate']
-            creater_id = queries.get_worker(url,pk=request.POST['worker']).id
+            start_time = form.cleaned_data['getDate']
+            creater_id = queries.get_worker(url, pk=request.POST['worker']).id
     content['form'] = form
     content['workers'] = Worker.objects.filter(supervisor=queries.get_user(request.session['url']))
     sales = Sale.objects.filter(
@@ -85,8 +80,6 @@ def ListView(request, url):
     )
 
     if sales.exists():
-        for sale in sales:
-            print(start_time,' ',sale.create_time)
         content['sales'] = sales
     else:
         content['message'] = 'no sale'
@@ -113,9 +106,9 @@ def AjaxSaleView(request, url):
                     editer_id=worker.id,
                     edit_time=datetime.now())
                 sale.save()
-                result = salelist(request, item)
+                result = sale_list(request, item)
             else:
-                result = {'fail': 'norecorded'}
+                result = {'fail': 'no recorded'}
             data = json.dumps(result)
             return HttpResponse(data, content_type='application/json')
         else:
@@ -124,20 +117,21 @@ def AjaxSaleView(request, url):
         raise Http404
 
 
-def salelist(request, item):
+def sale_list(request, item):
     worker = queries.get_worker(
         url=request.session['url'],
         username=request.session['worker'])
     sale_1 = Sale.objects.filter(
+        item=item,
         creater_id=worker.id,
         create_time__lt=worker.date_log
     )
     sale_2 = Sale.objects.filter(
+        item=item,
         creater_id=worker.id
     )
     first = sale_1.aggregate(Sum('volume'))['volume__sum'] if sale_1.exists() else 0
     now = sale_2.aggregate(Sum('volume'))['volume__sum'] if sale_2.exists() else 0
-    print(sale_1.count(), ' sale1 count', worker.id)
     return {
         'id': item.id,
         'name': item.name,

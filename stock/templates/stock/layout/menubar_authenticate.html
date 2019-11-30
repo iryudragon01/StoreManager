@@ -22,9 +22,16 @@
                       <a class="dropdown-item bg-dark text-white" href="{% url 'stock:list_item' request.session.url %}">List</a>
                     </div>
                   </li>
-              <li class="nav-item" >
-                <a class="nav-link" href="{% url 'stock:index_sale' request.user.url %}">Sale</a>
-               </li>
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Sale
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                      <a class="dropdown-item" href="{% url 'stock:index_sale'  request.session.url %}">summary</a>
+                      <a class="dropdown-item" href="{% url 'stock:list_sale' request.session.url %}">list</a>
+
+                    </div>
+                  </li>
               <li class="nav-item" >
                 <a class="nav-link" href="{% url 'stock:logout_user' %}">logout</a>
               </li>
