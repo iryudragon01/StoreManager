@@ -1,10 +1,13 @@
 from django.shortcuts import render,redirect,Http404,HttpResponse
-from stock.models import Sale,Item
+from stock.models import Sale,Item,Worker
 from stock.data2view.user import action,queries
 from . import forms,ajax
 from django.db.models import Sum
 from django.utils import timezone
+from django.utils.timezone import get_current_timezone_name
 import json
+from datetime import datetime
+import pytz
 
 def IndexView(request,url):
     content = {}
@@ -54,20 +57,29 @@ def DetailView(request,url,pk):
 
 def DeleteView(request,url,pk):
     sale = Sale.objects.filter(id=pk)
-    item_id=sale[0].item.id
     if sale.exists():
+        item_id=sale[0].item.id
         if sale[0].creater_id == queries.get_worker(url=request.session['url'],
                                     username=request.session['worker']).id:
             delsale = sale[0]
             delsale.delete()
-    return redirect('stock:detail_sale',url=request.session['url'],pk=item_id)
+            return redirect('stock:detail_sale',url=request.session['url'],pk=item_id)
+    else:
+        return Http404
 
 def ListView(request,url):
     content = {}
     worker = queries.get_worker(url,username=request.session['worker'])
+    start_time = worker.date_log
+    form = forms.ListTime(request.POST or None)
+    if request.POST:
+        if form.is_valid():
+            start_time = form.cleaned_data['getDate']
+    content['form']=form
+    content['workers'] = Worker.objects.filter(supervisor=queries.get_user(request.session['url']))
     sales = Sale.objects.filter(
         creater_id=worker.id,
-        create_time__gt=worker.date_log
+        create_time__gt=start_time
     )
     if sales.exists():
         content['sales']=sales
@@ -77,32 +89,29 @@ def ListView(request,url):
 
 
 def AjaxSaleView(request,url):
-    result={}
     if request.POST:
         if request.is_ajax():
-            print('it ajax')
             worker = queries.get_worker(url,username=request.session['worker'])
             if not worker.enable_sale:
                 return HttpResponse(json.dumps({'errors':'worker disable'}),content_type='application/json')
             name = request.POST.get('name') if 'name' in request.POST else ""
-            methon = request.POST.get('value') if 'value' in request.POST else 'Unknow'
-            item = Item.objects.get(name=name,
+            method = request.POST.get('value') if 'value' in request.POST else 'Unknow'
+            items = Item.objects.filter(name=name,
                                 user=queries.get_user(url))
-            sale = Sale(
+            if items.exists():
+                item=items[0]
+                sale = Sale(
                     item=item,
                     volume=1,
                     creater_id=worker.id,
                     create_time=timezone.now(),
                     editer_id=worker.id,
-                    edit_time=timezone.now()
-
-                )
-            sale.save()
-            result = salelist(request,item)
-            #else:
-            #    result = {'fail':'norecorded'}
+                    edit_time=timezone.now())
+                sale.save()
+                result = salelist(request,item)
+            else:
+                result = {'fail':'norecorded'}
             data = json.dumps(result)
-            print(data)
             return HttpResponse(data, content_type='application/json')
         else:
             raise Http404
