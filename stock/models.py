@@ -131,13 +131,11 @@ class Sale(models.Model):
     objects: models.manager
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     volume = models.PositiveIntegerField()
-    parent_id = models.PositiveIntegerField(default=0)
-    user_id = models.IntegerField(default=0)
-    worker_id= models.IntegerField(default=0)
-    create_worker = models.CharField(max_length=200)
-    create_time = models.DateTimeField()
-    edit_worker = models.CharField(max_length=200)
-    edit_time = models.DateTimeField()
+    creater_id = models.PositiveIntegerField(default=0)
+    create_time = models.DateTimeField(blank=True)
+    editer_id = models.PositiveIntegerField(default=0)
+    edit_time = models.DateTimeField(blank=True)
+
 
     def __str__(self):
         return self.item.name
