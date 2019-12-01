@@ -27,6 +27,19 @@
                 <a class="nav-link" href="{% url 'stock:logout_worker' request.session.url %}">Logout</a>
                </li>
         </div>
+        <div class="collapse" id="adminpermit_pwd" collapsed>
+          <form class="" action="{% url "stock:login_user" %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="email" value="{{request.session.email}}">
+            <input class="form-control" type="password" name="password" value="" placeholder="Administrator password">
+          </form>
+          </div>
+        <div class="float-right">
+          <button type="button" name="button" data-toggle="collapse" data-target="#adminpermit_pwd"> Activate </button>
+
+        </div>
+
+        </div>
 
       </div>
       </div>

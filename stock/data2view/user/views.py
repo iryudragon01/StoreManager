@@ -43,6 +43,7 @@ def LoginView(request):
 
 
 def LogoutView(request):
+    url = request.session['url']
     action.clear_worker(request)
     logout(request)
-    return redirect('stock:index')
+    return redirect('stock:index_store', url=url)

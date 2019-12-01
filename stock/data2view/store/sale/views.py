@@ -8,17 +8,32 @@ from datetime import datetime
 
 
 def IndexView(request, url):
-    content = {}
+    content = {
+        'workers': Worker.objects.filter(supervisor=queries.get_user(url))
+    }
     worker = queries.get_worker(url, username=request.session['worker'])
     if request.POST:
         if request.is_ajax():
             data = json.dumps(ajax.SaleEnableButton(request, worker))
             return HttpResponse(data, content_type='application/json')
+        elif 'view' in request.POST and request.user.is_authenticated:
+            worker = queries.get_worker(url, pk=request.POST['worker'])
+        elif 'checked' in request.POST:
+            worker=queries.get_worker(url, pk=request.POST['worker'])
+            worker.date_log = datetime.now()
+            worker.save()
+        else:
+            return Http404
+    if request.user.is_authenticated:
+        worker.enable_sale=False
+        worker.save()
+    content['selected'] = worker.id
+    request.session['view_worker'] = worker.username
     items = Item.objects.filter(
         user=worker.supervisor)
     if items.exists():
         content['items'] = items
-        content['forms'] = list(map(lambda item: sale_list(request, item), items))
+        content['forms'] = list(map(lambda item: sale_list(request, item, worker=worker), items))
     else:
         content['message'] = 'you do not have any item'
     BTNDisplay = "Enable" if worker.enable_sale else "Disable"
@@ -117,10 +132,11 @@ def AjaxSaleView(request, url):
         raise Http404
 
 
-def sale_list(request, item):
-    worker = queries.get_worker(
-        url=request.session['url'],
-        username=request.session['worker'])
+def sale_list(request, item, worker=False):
+    if not worker:
+        worker = queries.get_worker(
+            url=request.session['url'],
+            username=request.session['worker'])
     sale_1 = Sale.objects.filter(
         item=item,
         creater_id=worker.id,

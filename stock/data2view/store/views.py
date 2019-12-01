@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from stock.models import User, Worker
 from . import forms
 import hashlib
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate,logout
 from stock.data2view.user import queries, action
 
 
@@ -140,6 +140,8 @@ def EditWorkerView(request, url, pk):
 
 def WorkerLogoutView(request, url):
     action.clear_worker(request)
+    if request.user.is_authenticated:
+        logout(request)
     return redirect('stock:index_store', url=url)
 
 

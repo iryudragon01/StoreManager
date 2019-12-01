@@ -16,7 +16,7 @@ class ReferMiddleWare:
                     if subPath[2]!=request.session['url']:
                         return redirect('stock:logout_worker',url=request.session['worker'])
                     if not action.is_worker_genius(request,request.session['url']):
-                        return redirect('stock:logout_woker',url=request.session['worker'])
+                        return redirect('stock:logout_worker',url=request.session['worker'])
                 else:
                     if queries.is_url_exists(subPath[2]):
                         return redirect('stock:login_worker',url=subPath[2])

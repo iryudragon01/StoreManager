@@ -3,6 +3,31 @@
 
 {% block content %}
 {% load static %}
+{% if request.user.is_authenticated %}
+<form class="" action="" method="post">
+  {% csrf_token %}
+  <div class="row">
+    <div class="col-5">
+      <select class="custom-select" name="worker">
+        {% for worker in workers %}
+          <option value="{{worker.id}}"
+          {% ifequal worker.id selected %}selected {% endifequal %}
+          >{{worker.username}}</option>
+        {% endfor %}
+      </select>
+
+    </div>
+    <div class="col-3">
+      <button class="btn btn-primary" name='view' type="submit" >View</button>
+    </div>
+    <div class="col-3">
+      <button class="btn btn-success" type="submit" name="checked">checked</button>
+    </div>
+  </div>
+</form>
+{% endif %}
+
+
 {% if message %}
 <div class="row">
   <div class="col-12 alert alert-warning ">
@@ -52,35 +77,6 @@
         </div>
     {% endfor %}
 {% endif %}
-<div class="row">
-  <div class="col-3">
-    <button data-target="#checked_modal" data-toggle="modal">checked</button>
-  </div>
-
-</div>
-<!-- modal for checked -->
-<div class="modal fade" id='checked_modal'>
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header text-center">
-        <h5>Administrator Password</h5>
-        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body row">
-        <input class="form-control" type="password" name='adminPWD' value="">
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" id='verifypwdBTN'>Submit</button>
-      </div>
-
-    </div>
-
-  </div>
-
-</div>
 
 <!-- modal for details-->
 <div class="modal fade" id='detail'>

@@ -40,6 +40,7 @@ def set_worker(request, url, username):
     worker = queries.get_worker(url=url, username=username)
     worker.track = track
     worker.save()
+    request.session['email'] = worker.supervisor.email
     request.session['worker'] = worker.username
     request.session['track'] = track
     request.session['url'] = url
@@ -53,8 +54,9 @@ def clear_worker(request):
         del request.session['track']
         del request.session['url']
         del request.session['access_level']
+        del request.session['email']
     except KeyError:
-        print(' some thing error on clear_worker in stock.data2view.user.action')
+        print(KeyError, ' some thing error on clear_worker in stock.data2view.user.action')
     return
 
 
