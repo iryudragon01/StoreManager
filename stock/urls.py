@@ -21,6 +21,7 @@ urlpatterns = [
     path('store/<str:url>/create/item/', itemview.CreateView, name='create_item'),
     path('store/<str:url>/list/item/', itemview.ListView, name='list_item'),
     path('store/<str:url>/edit/item/<int:pk>/', itemview.EditView, name='edit_item'),
+    path('store/<str:url>/topup/item', itemview.TopupView, name='topup_item'),
 
     # store
     path('search/', storeview.StoreSearchView, name='search_store'),

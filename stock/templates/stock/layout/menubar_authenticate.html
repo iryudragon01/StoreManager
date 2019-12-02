@@ -20,6 +20,7 @@
                     <div class="dropdown-menu bg-dark" aria-labelledby="navbarDropdownMenuLink">
                       <a class="dropdown-item bg-dark text-white" href="{% url 'stock:create_item' request.session.url %}">Add</a>
                       <a class="dropdown-item bg-dark text-white" href="{% url 'stock:list_item' request.session.url %}">List</a>
+                      <a class="dropdown-item bg-dark text-white" href="{% url 'stock:topup_item' request.session.url %}">Top up</a>
                     </div>
                   </li>
                   <li class="nav-item dropdown">

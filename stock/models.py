@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser,BaseUserManager
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
 
 class UserManager(BaseUserManager):
@@ -16,7 +16,7 @@ class UserManager(BaseUserManager):
         user_obj.active = is_active
         user_obj.staff = is_staff
         user_obj.admin = is_admin
-        user_obj.set_password(password)     # change user password
+        user_obj.set_password(password)  # change user password
         user_obj.save(self._db)
         return user_obj
 
@@ -42,13 +42,13 @@ class User(AbstractBaseUser):
     email = models.EmailField(max_length=255, unique=True)
     full_name = models.CharField(max_length=255, blank=True, null=True)
     url = models.SlugField(unique=True, verbose_name='URL')
-    active = models.BooleanField(default=True)   # can login
+    active = models.BooleanField(default=True)  # can login
     staff = models.BooleanField(default=False)
     admin = models.BooleanField(default=False)
     timestamp = models.DateTimeField(auto_now=True)
     confirm = models.BooleanField(default=False)
     confirm_date = models.DateTimeField(null=True)
-    under_worker = models.PositiveIntegerField(default=2)   # number for worker under user
+    under_worker = models.PositiveIntegerField(default=2)  # number for worker under user
 
     USERNAME_FIELD = 'email'
     # USERNAME_FIELD and password are required by default
@@ -86,13 +86,13 @@ class User(AbstractBaseUser):
 class Worker(models.Model):
     objects: models.Manager
     supervisor = models.ForeignKey(User, on_delete=models.CASCADE)
-    username = models.SlugField(max_length=200 )
+    username = models.SlugField(max_length=200)
     password = models.CharField(max_length=200)
     enable_sale = models.BooleanField()
     date_log = models.DateTimeField()
-    track = models.CharField(max_length=255)     # track connection
+    track = models.CharField(max_length=255)  # track connection
     access_level = models.PositiveIntegerField(default=99,
-                                               choices=[(1,'admin'),(10,'superuser'),(99,'worker')],
+                                               choices=[(1, 'admin'), (10, 'superuser'), (99, 'worker')],
 
                                                )  # 1-99
 
@@ -102,12 +102,12 @@ class Worker(models.Model):
 
 class Item(models.Model):
     objects: models.manager
-    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
     price = models.PositiveIntegerField()
     type = models.PositiveSmallIntegerField(choices=[(1, 'Non Stock'), (2, 'Air pay'), (3, 'Stock')])
     is_active = models.PositiveSmallIntegerField(default=1,
-                                                 choices=[(0, 'inactive'), (1, 'active')],)
+                                                 choices=[(0, 'inactive'), (1, 'active')], )
     user_access = models.PositiveSmallIntegerField(default=1)
 
     def __str__(self):
@@ -135,7 +135,6 @@ class Sale(models.Model):
     create_time = models.DateTimeField(blank=True)
     editer_id = models.PositiveIntegerField(default=0)
     edit_time = models.DateTimeField(blank=True)
-
 
     def __str__(self):
         return self.item.name

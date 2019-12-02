@@ -43,8 +43,8 @@ def ListView(request, url):
     content = {"title": url}
     if not request.user.is_authenticated:
         return redirect('stock:index_store',request.session['url'])
-    supervisor = User.objects.get(email=request.user)
-    workers = Worker.objects.filter(supervisor=supervisor[0])
+    supervisor = queries.get_user(url)
+    workers = Worker.objects.filter(supervisor=supervisor)
     if workers.exists():
         content['workers'] = workers
         if workers.count() >= supervisor.under_worker:

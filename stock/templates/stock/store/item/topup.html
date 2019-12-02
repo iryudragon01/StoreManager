@@ -1,0 +1,33 @@
+{% extends 'stock/layout/layout.html' %}
+{% block content %}
+{% if message %}
+  <div class="row alert ">
+    <div class="col-12 text-center">
+      <h3><h4>{{message}}</h4></h3>
+    </div>
+
+  </div>
+{% endif %}
+<div class="row">
+  <div class="col-12 text-center alert alert-primary mt-2">
+      <h3>Top up</h3>
+  </div>
+</div>
+{% if items %}
+  {% for item in items %}
+      <div class="row form-group border">
+        <div class="col-2">
+          <p class="form-control-label">{{item.name}}</p>
+        </div>
+        <div class="col-5">
+          <input type="number" name="{{item.name}}" min="0" value="0" class="form-control">
+        </div>
+
+      </div>
+
+  {% endfor %}
+
+{% endif %}
+
+
+{% endblock content %}

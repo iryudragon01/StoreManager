@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect,Http404
 from stock.models import Item,User,Worker
 from . import forms,scripts
 from stock.data2view.user import queries,action
@@ -53,4 +53,25 @@ def ListView(request,url):
     content = {}
     items = Item.objects.filter(user=queries.get_user(url))  
     content['items'] = items
-    return render(request, 'stock/store/item/list.html',content)  
+    return render(request, 'stock/store/item/list.html',content)
+
+
+def is_admin_level(function_run):
+    def wrapper(request, *args, **kwargs):
+        worker = queries.get_worker(url=request.session['url'],username=request.session['worker'])
+        if worker.access_level == 1:
+            return function_run(request,*args, **kwargs)
+        else:
+            raise Http404('must be admin level worker')
+    return wrapper
+
+
+@is_admin_level
+def TopupView(request,url):
+    content = {}
+    content['items'] = Item.objects.filter(
+        user=queries.get_user(url),
+        is_active = True
+    )
+    return render(request, 'stock/store/item/topup.html',content)
+
