@@ -30,7 +30,7 @@ def IndexView(request, url):
     content['selected'] = worker.id
     request.session['view_worker'] = worker.username
     items = Item.objects.filter(
-        user=worker.supervisor)
+        user=worker.supervisor).order_by('type')
     if items.exists():
         content['items'] = items
         content['forms'] = list(map(lambda item: sale_list(request, item, worker=worker), items))
@@ -116,6 +116,7 @@ def AjaxSaleView(request, url):
                 sale = Sale(
                     item=item,
                     volume=1,
+                    user=request.session['email'],
                     creater_id=worker.id,
                     create_time=datetime.now(),
                     editer_id=worker.id,

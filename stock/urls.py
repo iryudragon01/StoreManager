@@ -22,7 +22,7 @@ urlpatterns = [
     path('store/<str:url>/list/item/', itemview.ListView, name='list_item'),
     path('store/<str:url>/edit/item/<int:pk>/', itemview.EditView, name='edit_item'),
     path('store/<str:url>/topup/item', itemview.TopupView, name='topup_item'),
-    path('store/<str:url>/topup/list', itemview.ListTopupView, name='list_topup'),
+    path('store/<str:url>/stock/detail/<int:pk>', itemview.DetailStockView, name='detail_stock'),
     path('store/<str:url>/stock', itemview.StockView, name='sum_stock'),
 
     # store

@@ -23,6 +23,9 @@
   <div class="col-2">
     <p>volume</p>
   </div>
+  <div class="col-2">
+    <p>edit</p>
+  </div>
 </div>
     {% for stock in stocks %}
         <div class="row border">
@@ -32,7 +35,38 @@
             <div class="col-2">
               <p>{{stock.sum}}</p>
             </div>
+            <div class="col-3">
+                <a class="btn btn-secondary" href="{% url 'stock:detail_stock' request.session.url stock.pk %}">Detail</a>
+            </div>
+            <div class="col-auto">
+              <button class=" btn btn-primary" data-toggle="modal" data-target="#inputNum"
+              onclick="javascript:document.getElementById('modal-title').innerHTML='{{stock.name}}';
+              document.getElementById('name').value='{{stock.name}}';
+              document.getElementById('number').value='0'"
+              >Topup</button>
+            </div>
         </div>
     {% endfor %}
 {% endif %}
+<div class="modal fade" id="inputNum">
+  <div class="modal-dialog modal-md ">
+    <div class="modal-content">
+      <div class="modal-header">
+              <h4 class="modal-title" id="modal-title">test</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span arai-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+        <form action="{% url 'stock:topup_item' request.session.url %}" method="post">
+          {% csrf_token %}
+        <input type="hidden" name="name" id="name" value="">
+        <input class="form-control mb-3 text-righ" type="number" name="volume" id="number" min="0" value="">
+        <button class="btn btn-primary" type="submit">Top up</button>
+        <button class="btn btn-secondary" type="button" data-dismiss="modal" name="button">close</button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
 {% endblock content %}

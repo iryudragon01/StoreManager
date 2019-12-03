@@ -1,0 +1,89 @@
+{% extends 'stock/layout/layout.html' %}
+{% block content %}
+{% if message %}
+  <div class="row alert ">
+    <div class="col-12 text-center">
+      <h3><h4>{{message}}</h4></h3>
+    </div>
+
+  </div>
+{% endif %}
+<div class="row">
+  <div class="col-12 text-center alert alert-primary mt-2">
+      <h3>Top up List</h3>
+  </div>
+</div>
+{% if topups %}
+<div class="row bg-info ">
+    <div class="col-4">
+        <p>date</p>
+    </div>
+    <div class="col-3">
+      <p>name</p>
+    </div>
+    <div class="col-2">
+      <p>volume</p>
+    </div>
+    <div class="col-auto">
+      <p>edit</p>
+    </div>
+</div>
+{% for topup in topups %}
+<div class="row border">
+    <div class="col-4">
+        <p>{{topup.create_time}}</p>
+    </div>
+    <div class="col-3">
+        <p>{{topup.item.name}}</p>
+    </div>
+    <div class="col-2">
+        <p>{{topup.volume}}</p>
+    </div>
+    <div class="col-auto">
+        <button class="btn btn-primary" data-toggle="modal" data-target="#EditValue" role="button"
+        onclick="javascript:document.getElementById('modal-title').innerHTML='{{topup.item.name}}';
+        document.getElementById('pk').value='{{topup.id}}';
+        document.getElementById('volume').value='{{topup.volume}}'
+
+        ">Edit</button>
+    </div>
+</div>
+
+{% endfor %}
+{% endif %}
+<div class="row">
+  <div class="col-3 text-right">
+    <a class="btn btn-success" href="{% url 'stock:sum_stock' request.session.url %}">Back</a>
+  </div>
+</div>
+
+<div class="modal fade" id="EditValue">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+          <h4 class="modal-title" id="modal-title">Title</h4>
+          <button class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form class="" action="" method="post">
+          {% csrf_token %}
+          <div class="row border mb-3">
+            <input type="hidden" name="stock_id" id="pk" value="">
+            <input class="form-control text-right" min="0" type="number" name="volume" id="volume" value="0">
+          </div>
+          <div class="row">
+            <button class="btn btn-primary" type="submit" name="button">Update</button>
+            <button class="btn btn-secondary" data-dismiss="modal">close</button>
+
+          </div>
+
+        </form>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+{% endblock content %}
