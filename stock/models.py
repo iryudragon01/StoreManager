@@ -118,10 +118,11 @@ class Stock(models.Model):
     objects: models.manager
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     volume = models.PositiveIntegerField()
-    create_user = models.CharField(max_length=200)
-    create_time = models.DateTimeField(auto_now=True)
-    edit_user = models.CharField(max_length=200)
-    edit_time = models.DateTimeField(auto_now=True)
+    user = models.EmailField(blank=True)
+    creater_id = models.PositiveIntegerField(default=0)
+    create_time = models.DateTimeField(blank=True)
+    editer_id = models.PositiveIntegerField(default=0)
+    edit_time = models.DateTimeField(blank=True)
 
     def __str__(self):
         return self.item.name
@@ -131,6 +132,7 @@ class Sale(models.Model):
     objects: models.manager
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     volume = models.PositiveIntegerField()
+    user = models.EmailField(blank=True)
     creater_id = models.PositiveIntegerField(default=0)
     create_time = models.DateTimeField(blank=True)
     editer_id = models.PositiveIntegerField(default=0)

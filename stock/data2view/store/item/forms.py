@@ -1,4 +1,4 @@
-from stock.models import Item
+from stock.models import Item,Stock
 from django import forms
 
 
@@ -52,5 +52,10 @@ class EditItemform(forms.ModelForm):
 
             choices=[('1', 'admin'), ('10', 'power user'), ('99', 'worker')],
             attrs={'class': 'custom-select'})   
-                 
+
+
+class TopupForm(forms.ModelForm):
+    class Meta:
+        model = Stock
+        fields = ['item', 'volume', 'creater_id', 'create_time', 'editer_id', 'edit_time']
 

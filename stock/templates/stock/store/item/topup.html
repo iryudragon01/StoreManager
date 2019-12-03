@@ -14,19 +14,29 @@
   </div>
 </div>
 {% if items %}
+<form class="" action="" method="post">
+{% csrf_token %}
   {% for item in items %}
       <div class="row form-group border">
         <div class="col-2">
           <p class="form-control-label">{{item.name}}</p>
         </div>
-        <div class="col-5">
+        <div class="col-3">
           <input type="number" name="{{item.name}}" min="0" value="0" class="form-control">
         </div>
 
       </div>
 
   {% endfor %}
-
+  <div class="row">
+      <div class="col-2">
+          <button class="btn btn-primary" type="submit" name="button">Top up</button>
+      </div>
+</form>
+    <div class="col-2">
+      <a class="btn btn-secondary" href="{% url 'stock:list_topup' request.session.url %}">Cancel</a>
+    </div>
+</div>
 {% endif %}
 
 

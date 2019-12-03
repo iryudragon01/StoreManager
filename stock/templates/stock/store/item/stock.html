@@ -1,0 +1,38 @@
+{% extends 'stock/layout/layout.html' %}
+{% block content %}
+{% if message %}
+  <div class="row alert ">
+    <div class="col-12 text-center">
+      <h3><h4>{{message}}</h4></h3>
+    </div>
+
+  </div>
+{% endif %}
+<div class="row">
+  <div class="col-12 text-center alert alert-primary mt-2">
+      <h3>stock list</h3>
+  </div>
+</div>
+
+
+{% if stocks %}
+<div class="row">
+  <div class="col-3">
+    <p>name</p>
+  </div>
+  <div class="col-2">
+    <p>volume</p>
+  </div>
+</div>
+    {% for stock in stocks %}
+        <div class="row border">
+            <div class="col-3">
+              <p>{{stock.name}}</p>
+            </div>
+            <div class="col-2">
+              <p>{{stock.sum}}</p>
+            </div>
+        </div>
+    {% endfor %}
+{% endif %}
+{% endblock content %}

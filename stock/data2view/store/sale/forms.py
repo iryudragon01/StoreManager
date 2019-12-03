@@ -1,5 +1,5 @@
 from django import forms
-from stock.models import Sale
+from stock.models import Sale, Stock
 from datetime import datetime, timedelta
 from django.utils import timezone
 
