@@ -140,3 +140,18 @@ class Sale(models.Model):
 
     def __str__(self):
         return self.item.name
+
+
+class Statement(models.Model):
+    objects = models.Manager
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    name = models.SlugField()
+    type = models.SlugField(choices=[('income', 'income'), ('expense', 'expense')])
+    volume = models.PositiveIntegerField()
+    creater_id = models.PositiveIntegerField()
+    create_time = models.DateTimeField()
+    editer_id = models.PositiveIntegerField()
+    edit_time = models.DateTimeField()
+
+    def __str__(self):
+        return f"{self.name} {self.user.name}"

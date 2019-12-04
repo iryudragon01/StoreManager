@@ -1,0 +1,63 @@
+{% extends 'stock/layout/layout.html' %}
+
+{% block content %}
+{% if message %}
+  <div class="row alert ">
+    <div class="col-12 text-center">
+      <h3><h4>{{message}}</h4></h3>
+    </div>
+
+  </div>
+{% endif %}
+<div class="row">
+  <div class="col-12 text-center alert alert-primary mt-2">
+      <h3>List {{mode}}</h3>
+  </div>
+</div>
+{% if statements %}
+<div class="row">
+  <div class="col-4">
+    <h4>date</h4>
+  </div>
+  <div class="col-4">
+    <h4>name</h4>
+  </div>
+  <div class="col-2">
+    <h4>Amount</h4>
+  </div>
+  <div class="col-2">
+    <h4>recorder</h4>
+  </div>
+
+</div>
+{% for statement in statements %}
+
+<div class="row border">
+  <div class="col-4">
+    <p>{{statement.create_time}}</p>
+  </div>
+  <div class="col-4">
+    <p>{{statement.name}}</p>
+  </div>
+  <div class="col-2">
+    <p>{{statement.volume}}</p>
+  </div>
+  <div class="col-2">
+    <p>{% for worker in workers %}
+        {% ifequal worker.id statement.creater_id %}
+            {{worker.username}}
+        {% endifequal %}
+      {% endfor %}
+    </p>
+  </div>
+
+</div>
+{% endfor %}
+{% endif %}
+<div class="row">
+  <div class="col-3">
+    <a class="btn btn-primary float-right mt-3" href="{% url 'stock:create_statement' request.session.url mode %}">Create {{mode}}</a>
+  </div>
+
+</div>
+{% endblock content %}

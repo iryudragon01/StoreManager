@@ -5,12 +5,16 @@ from .data2view.store.sale import views as saleview
 from .data2view.user import views as userview
 from stock.data2view.index import views as indexview
 from stock.data2view.store import views as storeview
+from stock.data2view.store.statement import views as statementview
 
 app_name = 'stock'
 
 urlpatterns = [
     path('bootstrap/', storeview.bootstrap, name='testbootstrap'),
     path('', indexview.IndexView, name='index'),
+    # statement
+    path('store/<str:url>/store/statement/list/<str:mode>/', statementview.listView, name='list_statement'),
+    path('store/<str:url>/store/statement/create/<str:mode>/', statementview.createView, name='create_statement'),
     #sale
     path('store/<str:url>/store/sale/index' , saleview.IndexView, name="index_sale"),
     path('store/<str:url>/store/sale/detail/<int:pk>' , saleview.DetailView, name="detail_sale"),

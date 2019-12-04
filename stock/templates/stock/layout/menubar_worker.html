@@ -14,12 +14,22 @@
                 <a class="nav-link" href="{% url 'stock:index_store' request.session.url %}">Home</a>
               </li>
               <li class="nav-item dropdown" >
-                <a class="nav-link dropdown-gogle" href="#" role="button" data-toggle="dropdown" id="StockDrowdownMenuLink">Stock</a>
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" id="StockDrowdownMenuLink">Stock</a>
                     <div class="dropdown-menu" aria-labelledby="StockDrowdownMenuLink">
                         <a class="dropdown-item" href="{% url 'stock:sum_stock' request.session.url %}">Stock</a>
                         <a class="dropdown-item" href="{% url 'stock:topup_item' request.session.url %}">Topup</a>
                         <a class="dropdown-item" href="#">List</a>
                     </div>
+              </li>
+              <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" id="StatementDropdownMenuLink">Statement</a>
+                  <div class="dropdown-menu" aria-labelledby="StatementDropdownMenuLink">
+                    <a class="dropdown-item" href="{% url 'stock:create_statement' request.session.url 'income' %}">Crete Income</a>
+                    <a class="dropdown-item" href="{% url 'stock:create_statement' request.session.url 'expense' %}">Crete Expense</a>
+                    <a class="dropdown-item" href="{% url 'stock:list_statement' request.session.url 'income' %}">List Income</a>
+                    <a class="dropdown-item" href="{% url 'stock:list_statement' request.session.url 'expense' %}">List Expense</a>
+
+                  </div>
               </li>
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
