@@ -116,6 +116,7 @@ def AjaxSaleView(request, url):
                 sale = Sale(
                     item=item,
                     volume=1,
+                    sale_price=item.price,
                     user=request.session['email'],
                     creater_id=worker.id,
                     create_time=datetime.now(),

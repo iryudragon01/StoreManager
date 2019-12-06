@@ -113,6 +113,9 @@ class Item(models.Model):
     def __str__(self):
         return self.name
 
+    def get_price(self):
+        return self.price
+
 
 class Stock(models.Model):
     objects: models.manager
@@ -132,6 +135,7 @@ class Sale(models.Model):
     objects: models.manager
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     volume = models.PositiveIntegerField()
+    sale_price = models.PositiveIntegerField(default=0)
     user = models.EmailField(blank=True)
     creater_id = models.PositiveIntegerField(default=0)
     create_time = models.DateTimeField(blank=True)

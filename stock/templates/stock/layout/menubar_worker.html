@@ -36,10 +36,14 @@
                   Sale
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                  <a class="dropdown-item" href="{% url 'stock:index_sale'  request.session.url %}">summary</a>
-                  <a class="dropdown-item" href="{% url 'stock:list_sale' request.session.url %}">list</a>
+                  <a class="dropdown-item" href="{% url 'stock:index_sale'  request.session.url %}">Sale</a>
+                  <a class="dropdown-item" href="{% url 'stock:list_sale' request.session.url %}">Sale list</a>
 
                 </div>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="{% url 'stock:index_sum' request.session.url %}">summary</a>
+
               </li>
               <li class="nav-item" >
                 <a class="nav-link" href="{% url 'stock:logout_worker' request.session.url %}">Logout</a>

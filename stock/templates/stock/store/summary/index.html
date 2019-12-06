@@ -1,0 +1,92 @@
+{% extends 'stock/layout/layout.html' %}
+
+{% block content %}
+{% if message %}
+  <div class="row alert ">
+    <div class="col-12 text-center">
+      <h3><h4>{{message}}</h4></h3>
+    </div>
+
+  </div>
+{% endif %}
+<div class="row">
+  <div class="col-12 text-center alert alert-primary mt-2">
+      <h3>Summaries for {{request.session.worker}}</h3>
+  </div>
+</div>
+{% if nostocks %}
+<div class="alert">
+  <h3 class="text-center">no stock item</h3>
+  </div>
+<div class="row">
+<div class="col-2 text-right">
+    <p>name</p>
+  </div>
+  <div class="col-1 text-right">
+    <p>pre sale</p>
+  </div>
+  <div class="col-1 text-right">
+    <p>post sale</p>
+  </div>
+  <div class="col-1 text-right">
+    <p>sale</p>
+  </div>
+  <div class="col-1 text-right">
+    <p>sum</p>
+  </div>
+
+</div>
+    {% for nostock in nostocks %}
+        <div class="row border">
+            <div class="col-2 text-right">
+                {{nostock.name}}
+            </div>
+            <div class="col-1 text-right">
+              {{nostock.pre_volume}}
+            </div>
+            <div class="col-1 text-right">
+              {{nostock.all_volume}}
+            </div>
+            <div class="col-1 text-right">
+              {{nostock.volume}}
+            </div>
+            <div class="col-1 text-right">
+              {{nostock.sum}}
+            </div>
+        </div>
+
+    {% endfor %}
+{% endif %}
+<!-- air pays -->
+{% if airpays %}
+
+<div class="alert mt-3">
+  <h3 class="text-center">Air pay item</h3>
+  </div>
+  <div class="row">
+    <div class="col-2 text-right">
+      <p>name</p>
+    </div>
+    <div class="col-1 col-md-3">
+
+    </div>
+    <div class="col-2 text-right">
+      <p>Amount</p>
+    </div>
+  </div>
+  {% for airpay in airpays %}
+
+      <div class="row">
+        <div class="col-2 text-right">
+          <p>{{airpay.name}}</p>
+        </div>
+        <div class="col-1 col-md-3">
+    
+        </div>
+        <div class="col-2 text-right">
+          <p>{{airpay.volume}}</p>
+        </div>
+      </div>
+  {% endfor %}
+{% endif %}
+{% endblock content %}
